@@ -10,4 +10,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  base: '/coffeeshop-react-springboot_v2/', // 👈 important for GitHub Pages
 })
