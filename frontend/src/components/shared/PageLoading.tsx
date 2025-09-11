@@ -2,10 +2,6 @@ import { Dialog } from '@headlessui/react';
 import BlankModal from './modal/BlankModal';
 import LoadingSpinner from './LoadingSpinner';
 
-/**
- * @description A page loading component that displays a loading spinner in a modal.
- * @param {boolean} show If true, the loading spinner will be shown.
- */
 interface PageLoadingProps {
   show: boolean;
 }

@@ -1,11 +1,6 @@
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { ChangeEvent } from 'react';
 
-/**
- * @description A counter input component with plus and minus buttons.
- * @param {number} value The current value of the counter.
- * @param {(value: number) => void} onChange A function to be called when the value changes.
- */
 interface CounterInputProps {
   value: number;
   onChange: (value: number) => void;
@@ -43,11 +38,6 @@ const CounterInput = ({ value, onChange }: CounterInputProps) => {
   );
 };
 
-/**
- * @description A button component for the counter input.
- * @param {React.ReactNode} children The content to be displayed inside the button.
- * @param {() => void} onClick A function to be called when the button is clicked.
- */
 interface CountButtonProps {
   children: React.ReactNode;
   onClick: () => void;

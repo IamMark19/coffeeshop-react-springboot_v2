@@ -1,8 +1,3 @@
-/**
- * @description A card component for displaying an address.
- * It has a background image and a gradient overlay.
- * @param {React.ReactNode} children The content to be displayed inside the card.
- */
 interface AddressCardProps {
   children: React.ReactNode;
 }

@@ -1,12 +1,6 @@
 import { ChangeEvent } from 'react';
 import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-/**
- * @description A small counter input component with plus and minus buttons.
- * If the value is 1, the minus button will be replaced with a trash icon.
- * @param {number} value The current value of the counter.
- * @param {(value: number) => void} onChange A function to be called when the value changes.
- */
 interface CounterInputSmProps {
   value: number;
   onChange: (value: number) => void;
@@ -48,11 +42,6 @@ const CounterInputSm = ({ value, onChange }: CounterInputSmProps) => {
   );
 };
 
-/**
- * @description A button component for the counter input.
- * @param {React.ReactNode} children The content to be displayed inside the button.
- * @param {() => void} onClick A function to be called when the button is clicked.
- */
 interface CountButtonProps {
   children: React.ReactNode;
   onClick: () => void;

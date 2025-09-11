@@ -1,10 +1,8 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { LatLng, UserAddress } from '@/types';
 import useDebounce from '@/hooks/useDebounce';
 import { useUserAddress } from '@/hooks/useUserAddress';
-import MapComponent, {
-  MapComponentRef,
-} from '@/components/shared/MapComponent';
+import MapComponent from '@/components/shared/MapComponent';
 import BaseModal from '@/components/shared/modal/BaseModal';
 import StickyModalHeader from '../StickyModalHeader';
 import FlexContainer from '../FlexContainer';
@@ -47,19 +45,6 @@ export default function AddressModal({ show, onClose }: AddressModalProps) {
     }
   };
 
-  const mapRef = useRef<MapComponentRef>(null);
-
-  const handleCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        const newCoord = { lat: latitude, lng: longitude };
-        mapRef.current?.setNewPosition(newCoord);
-        handleCoordChange(newCoord);
-      });
-    }
-  };
-
   return (
     <BaseModal show={show} onClose={() => {}} fullScreen>
       <FlexContainer>
@@ -71,15 +56,11 @@ export default function AddressModal({ show, onClose }: AddressModalProps) {
             isLoading={isLoading}
           />
           <div className="w-full h-80 sm:h-72 bg-gray-300 rounded-lg overflow-hidden mt-4">
-            <MapComponent
-              ref={mapRef}
-              onCoordChange={handleCoordChange}
-            />
+            <MapComponent onCoordChange={handleCoordChange} />
           </div>
           <ControlButtons
             onCancelClick={onClose}
             onConfirmClick={handelConfirm}
-            onCurrentLocationClick={handleCurrentLocation}
             confirmBtnDisabled={confirmBtnDisabled}
           />
         </FullHeightContainer>

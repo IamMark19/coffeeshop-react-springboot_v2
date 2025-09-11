@@ -2,11 +2,6 @@ import { priceWithSign } from '@/utils/helper';
 import { useModal } from '@/hooks/useModal';
 import { ProductCardProps } from './type';
 
-/**
- * @description A card component for displaying a product with a background image.
- * @param {ProductCardProps} props The props for the component.
- * @returns {React.ReactElement} The card component.
- */
 export default function ProductCardBgImage({ coffee }: ProductCardProps) {
   // Modal Provider
   const { showProductModal } = useModal();
