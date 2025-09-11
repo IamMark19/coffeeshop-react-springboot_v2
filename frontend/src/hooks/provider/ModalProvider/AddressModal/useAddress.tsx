@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { LatLng } from '@/types';
-import { getAddrFromCoordinate } from '@/service/mapBoxGeoCoding';
+import { getAddrFromCoordinate } from '@/service/nominatimGeoCoding';
 
 const useAddress = (coordinates: LatLng | null, initAddress: string) => {
   const [address, setAddress] = useState(initAddress);

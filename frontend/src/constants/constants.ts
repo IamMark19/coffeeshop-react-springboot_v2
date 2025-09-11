@@ -4,8 +4,6 @@ export const APP_NAME = "Coffee Shop";
 
 export const GOOGLE_OAUTH_CLIENT_ID = import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID;
 
-export const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
-
 export const defaultCoordinate: LatLng = {
   lng: 96.17045650343823,
   lat: 16.785692464382592,
