@@ -11,6 +11,7 @@ export default function LoginPage() {
   const { login: loginToApp } = useAuth();
   const [isLoading, setLoading] = useState(false);
   const [fbBtnClick, setFbBtnClick] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   const handleGLoginSuccess = async (tokenResponse: TokenResponse) => {
     setLoading(true);
@@ -51,8 +52,26 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center w-full h-screen bg-primary p-4">
-        <div className="flex flex-col w-full max-w-md bg-gray bg-gray-100 rounded-3xl p-10 mx-auto">
+      <div
+        className={`flex flex-col items-center justify-center w-full h-screen p-4 ${
+          videoError ? 'bg-primary' : ''
+        }`}
+      >
+        {!videoError && (
+          <>
+            <video
+              src="/videos/coffee-shop.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+              onError={() => setVideoError(true)}
+            ></video>
+            <div className="absolute inset-0 w-full h-full bg-black/40"></div>
+          </>
+        )}
+        <div className="relative z-10 flex flex-col w-full max-w-md bg-gray bg-gray-100 rounded-3xl p-10 mx-auto">
           <div className="flex items-center gap-3 mb-10 mx-auto">
             <img
               src="/images/app-logo.svg"
