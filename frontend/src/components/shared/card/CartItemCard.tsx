@@ -4,10 +4,19 @@ import { CartItem } from '@/types';
 import { priceWithSign } from '@/utils/helper';
 import { useShoppingCart } from '@/hooks/useShoppingCart';
 
+/**
+ * @description The props for the CartItemCard component.
+ * @param {CartItem} cartItem The cart item to be displayed.
+ */
 interface CartItemCardProps {
   cartItem: CartItem;
 }
 
+/**
+ * @description A card component for displaying a cart item.
+ * @param {CartItemCardProps} props The props for the component.
+ * @returns {React.ReactElement} The card component.
+ */
 const CartItemCard: React.FC<CartItemCardProps> = ({ cartItem }) => {
   // Shopping Cart
   const { updateQuantity, removeFromCart } = useShoppingCart();

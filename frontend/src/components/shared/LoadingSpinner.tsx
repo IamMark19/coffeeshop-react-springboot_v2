@@ -1,5 +1,9 @@
 import { classNames } from '@/utils/helper';
 
+/**
+ * @description A loading spinner component.
+ * @param {boolean} sm If true, the spinner will be small.
+ */
 interface LoadingSpinnerProps {
   sm?: boolean;
 }

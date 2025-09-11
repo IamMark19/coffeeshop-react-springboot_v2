@@ -21,14 +21,28 @@ const DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
+/**
+ * @description Props for the MapComponent.
+ * @param {(value: LatLng) => void} onCoordChange A function to be called when the coordinate changes.
+ */
 interface MapComponentProps {
   onCoordChange?: (value: LatLng) => void;
 }
 
+/**
+ * @description Ref for the MapComponent.
+ * @param {(latLng: LatLng) => void} setNewPosition A function to set the new position of the marker.
+ */
 export interface MapComponentRef {
   setNewPosition: (latLng: LatLng) => void;
 }
 
+/**
+ * @description A map component that displays a draggable marker.
+ * @param {MapComponentProps} props The props for the component.
+ * @param {React.Ref<MapComponentRef>} ref The ref for the component.
+ * @returns {React.ReactElement} The map component.
+ */
 const MapComponent: React.ForwardRefRenderFunction<
   MapComponentRef,
   MapComponentProps
@@ -53,6 +67,12 @@ const MapComponent: React.ForwardRefRenderFunction<
     [onCoordChange]
   );
 
+  /**
+   * @description A component that recenters the map.
+   * @param {number} lat The latitude.
+   * @param {number} lng The longitude.
+   * @returns {null}
+   */
   const Recenter = ({ lat, lng }: LatLng) => {
     const map = useMap();
     React.useEffect(() => {

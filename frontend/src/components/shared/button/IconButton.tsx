@@ -1,6 +1,11 @@
 import { classNames } from '@/utils/helper';
 import BaseButton, { BaseButtonProps } from './BaseButton';
 
+/**
+ * @description An icon button component.
+ * @param {BaseButtonProps} props The props for the component.
+ * @returns {React.ReactElement} The button component.
+ */
 export default function IconButton(props: BaseButtonProps) {
   const { className, children, ...extraProps } = props;
   const { disabled } = extraProps;

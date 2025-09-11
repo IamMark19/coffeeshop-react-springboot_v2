@@ -4,6 +4,11 @@ import { useModal } from '@/hooks/useModal';
 import { classNames, priceWithSign } from '@/utils/helper';
 import { ProductCardProps } from './type';
 
+/**
+ * @description A horizontal card component for displaying a product.
+ * @param {ProductCardProps} props The props for the component.
+ * @returns {React.ReactElement} The card component.
+ */
 export default function ProductCardHorizontal({ coffee }: ProductCardProps) {
   // Shopping Cart
   const { items } = useShoppingCart();
@@ -39,11 +44,21 @@ export default function ProductCardHorizontal({ coffee }: ProductCardProps) {
         </p>
       </div>
       <div className="absolute bottom-2 right-2">
-        <div className={classNames(
-          "inline-flex items-center justify-center w-7 h-7 rounded-full",
-          isSameItem? "text-primary border border-primary" : "bg-primary text-white"
-        )}>
-          {isSameItem ? <span className='text-sm font-semibold'>{isSameItem.quantity}</span> : <PlusIcon className="h-5 w-5" />}
+        <div
+          className={classNames(
+            'inline-flex items-center justify-center w-7 h-7 rounded-full',
+            isSameItem
+              ? 'text-primary border border-primary'
+              : 'bg-primary text-white'
+          )}
+        >
+          {isSameItem ? (
+            <span className="text-sm font-semibold">
+              {isSameItem.quantity}
+            </span>
+          ) : (
+            <PlusIcon className="h-5 w-5" />
+          )}
         </div>
       </div>
     </button>

@@ -1,12 +1,23 @@
 import { Fragment } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 
+/**
+ * @description The props for the BlankModal component.
+ * @param {boolean} show If true, the modal will be shown.
+ * @param {() => void} onClose A function to be called when the modal is closed.
+ * @param {React.ReactNode} children The content to be displayed inside the modal.
+ */
 interface BlankModalProps {
   show: boolean;
   onClose: () => void;
   children: React.ReactNode;
 }
 
+/**
+ * @description A blank modal component.
+ * @param {BlankModalProps} props The props for the component.
+ * @returns {React.ReactElement} The modal component.
+ */
 export default function BlankModal({
   show,
   onClose,

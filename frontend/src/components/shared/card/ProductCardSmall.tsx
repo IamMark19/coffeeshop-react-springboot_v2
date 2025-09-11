@@ -4,6 +4,11 @@ import { useModal } from '@/hooks/useModal';
 import { classNames, priceWithSign } from '@/utils/helper';
 import { ProductCardProps } from './type';
 
+/**
+ * @description A small card component for displaying a product.
+ * @param {ProductCardProps} props The props for the component.
+ * @returns {React.ReactElement} The card component.
+ */
 export default function ProductCardSmall({ coffee }: ProductCardProps) {
   // Shopping Cart
   const { items } = useShoppingCart();
@@ -26,12 +31,12 @@ export default function ProductCardSmall({ coffee }: ProductCardProps) {
         className="w-full h-32 object-cover bg-gray-300 rounded-xl"
       />
       <div className="flex flex-col justify-between h-20 text-left py-1">
-          <p className="font-bold text-neutral-800 line-clamp-2">
-            {coffee.displayName}
-          </p>
-          <p className="font-semibold text-teal-900">
-            {priceWithSign(coffee.price)}
-          </p>
+        <p className="font-bold text-neutral-800 line-clamp-2">
+          {coffee.displayName}
+        </p>
+        <p className="font-semibold text-teal-900">
+          {priceWithSign(coffee.price)}
+        </p>
       </div>
       <div className="absolute bottom-2 right-2">
         <div
