@@ -12,6 +12,7 @@ import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsAndConditions from './pages/TermsAndConditions';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 export default function Router() {
   return (
@@ -24,6 +25,7 @@ export default function Router() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
         {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />
       </Route>
