@@ -1,6 +1,11 @@
 import { classNames } from '@/utils/helper';
 import BaseButton, { BaseButtonProps } from './BaseButton';
 
+/**
+ * @description A filled button component.
+ * @param {BaseButtonProps} props The props for the component.
+ * @returns {React.ReactElement} The button component.
+ */
 export default function ButtonFilled(props: BaseButtonProps) {
   const { className, children, ...extraProps } = props;
   const { disabled } = extraProps;
