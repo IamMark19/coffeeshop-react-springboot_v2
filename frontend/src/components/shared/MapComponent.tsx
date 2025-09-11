@@ -1,7 +1,13 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import { LatLng } from '@/types';
 import { useUserAddress } from '@/hooks/useUserAddress';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { defaultCoordinate } from '@/constants/constants';
 import L from 'leaflet';
@@ -19,7 +25,14 @@ interface MapComponentProps {
   onCoordChange?: (value: LatLng) => void;
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({ onCoordChange }) => {
+export interface MapComponentRef {
+  setNewPosition: (latLng: LatLng) => void;
+}
+
+const MapComponent: React.ForwardRefRenderFunction<
+  MapComponentRef,
+  MapComponentProps
+> = ({ onCoordChange }, ref) => {
   const { address } = useUserAddress();
   const initLoc = address?.coordinates || defaultCoordinate;
 
@@ -40,8 +53,22 @@ const MapComponent: React.FC<MapComponentProps> = ({ onCoordChange }) => {
     [onCoordChange]
   );
 
+  const Recenter = ({ lat, lng }: LatLng) => {
+    const map = useMap();
+    React.useEffect(() => {
+      map.setView([lat, lng]);
+    }, [lat, lng]);
+    return null;
+  };
+
+  useImperativeHandle(ref, () => ({
+    setNewPosition: (latLng: LatLng) => {
+      setPosition(latLng);
+    },
+  }));
+
   return (
-    <div className='relative w-full h-full'>
+    <div className="relative w-full h-full">
       <MapContainer
         style={{
           height: '100%',
@@ -50,9 +77,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ onCoordChange }) => {
         zoom={14}
         scrollWheelZoom={true}
       >
+        <Recenter lat={position.lat} lng={position.lng} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <Marker
           draggable={true}
@@ -65,4 +93,4 @@ const MapComponent: React.FC<MapComponentProps> = ({ onCoordChange }) => {
   );
 };
 
-export default MapComponent;
+export default forwardRef(MapComponent);
