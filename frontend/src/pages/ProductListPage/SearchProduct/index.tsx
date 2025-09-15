@@ -16,7 +16,7 @@ const useProductFilter = (coffees: CoffeeProduct[], keyword: string) => {
   useEffect(() => {
     if (keyword) {
       const results = coffees?.filter((item) =>
-        item.displayName.toLowerCase().includes(keyword.toLowerCase())
+        item.name.toLowerCase().includes(keyword.toLowerCase())
       );
       setData(results);
     } else {

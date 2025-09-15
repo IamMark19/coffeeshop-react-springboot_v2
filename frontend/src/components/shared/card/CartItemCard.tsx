@@ -13,7 +13,8 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ cartItem }) => {
   const { updateQuantity, removeFromCart } = useShoppingCart();
   // Local Variable
   const { id, product, quantity, size } = cartItem;
-  const totalAmount = product.prices[size] * quantity;
+  const variant = product.variants.find((v) => v.size === size);
+  const totalAmount = variant ? variant.price * quantity : 0;
 
   const handleQuantityChange = (value: number) => {
     if (value >= 1) {
@@ -29,12 +30,12 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ cartItem }) => {
         <img
           src={product.image}
           className="w-16 h-16 bg-gray-100 object-cover rounded-lg"
-          alt={product.displayName}
+          alt={product.name}
         />
         <div className="flex flex-col justify-between">
           <div className="flex flex-col">
             <p className="text-primary-700 font-semibold ">
-              {product.displayName}
+              {product.name}
             </p>
             <p className="text-gray-400 text-xs capitalize">{size}</p>
           </div>
@@ -47,7 +48,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ cartItem }) => {
         </p>
         {quantity > 1 && (
           <span className="text-gray-400 text-xs">{`${priceWithSign(
-            product.prices[size]
+            variant?.price || 0
           )} each`}</span>
         )}
       </div>

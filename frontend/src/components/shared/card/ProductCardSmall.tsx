@@ -19,15 +19,15 @@ export default function ProductCardSmall({ coffee }: ProductCardProps) {
     >
       <img
         src={coffee.image}
-        alt={coffee.displayName}
+        alt={coffee.name}
         className="w-full h-32 object-cover bg-gray-300 rounded-xl"
       />
       <div className="flex flex-col justify-between h-20 text-left py-1">
         <p className="font-bold text-neutral-800 line-clamp-2">
-          {coffee.displayName}
+          {coffee.name}
         </p>
         <p className="font-semibold text-teal-900">
-          {priceWithSign(coffee.prices.small)}
+          {priceWithSign(coffee.variants[0].price)}
         </p>
       </div>
       <div className="absolute bottom-2 right-2">

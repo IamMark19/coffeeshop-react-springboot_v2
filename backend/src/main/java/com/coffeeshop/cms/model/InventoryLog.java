@@ -21,8 +21,8 @@ public class InventoryLog {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "product_variant_id")
+    private ProductVariant productVariant;
 
     private Integer changeAmount;
     private LocalDateTime updatedAt;

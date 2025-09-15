@@ -54,11 +54,11 @@ export default function CheckoutModal({ show, onClose }: CheckoutModalProps) {
       coordinates: address!.coordinates,
     };
     const orderItems: OrderItem[] = cartItems?.map((ci) => {
+      const variant = ci.product.variants.find((v) => v.size === ci.size);
       return {
-        productId: ci.product.id,
-        productName: ci.product.displayName,
+        productVariantId: variant!.id,
         quantity: ci.quantity,
-        price: ci.product.prices[ci.size] * ci.quantity,
+        price: variant!.price * ci.quantity,
         size: ci.size,
       };
     });

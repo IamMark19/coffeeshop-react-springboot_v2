@@ -1,21 +1,48 @@
 package com.coffeeshop.cms.service;
 
 import com.coffeeshop.cms.dto.ProductDto;
+import com.coffeeshop.cms.dto.ProductVariantDto;
+import com.coffeeshop.cms.model.Product;
+import com.coffeeshop.cms.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
 
+    @Autowired
+    private ProductRepository productRepository;
+
     public List<ProductDto> getAllProducts() {
-        // TODO: Implement method
-        return Collections.emptyList();
+        return productRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     public ProductDto getProductById(Long id) {
-        // TODO: Implement method
-        return null;
+        return productRepository.findById(id)
+                .map(this::convertToDto)
+                .orElse(null);
+    }
+
+    private ProductDto convertToDto(Product product) {
+        ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
+        productDto.setName(product.getName());
+        productDto.setDescription(product.getDescription());
+        productDto.setVariants(product.getVariants().stream()
+                .map(variant -> {
+                    ProductVariantDto variantDto = new ProductVariantDto();
+                    variantDto.setId(variant.getId());
+                    variantDto.setSize(variant.getSize());
+                    variantDto.setPrice(variant.getPrice());
+                    variantDto.setStock(variant.getStock());
+                    return variantDto;
+                })
+                .collect(Collectors.toList()));
+        return productDto;
     }
 }
