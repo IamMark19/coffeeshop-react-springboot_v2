@@ -1,6 +1,6 @@
-# CoffeeShop E-Commerce Website
+# BrewTopia E-Commerce Website
 
-Welcome to the CoffeeShop E-Commerce Website, a sample React application showcasing a frontend for a virtual coffee shop. This project is built entirely with React, utilizing modern tools and libraries like Tailwind CSS, HeadlessUI, Typescript, and Vite for efficient development. The data for products and user cart items are stored in the browser's Local Storage for a simplified, client-only experience.
+Welcome to the BrewTopia E-Commerce Website, a sample React application showcasing a frontend for a virtual coffee shop. This project is built entirely with React, utilizing modern tools and libraries like Tailwind CSS, HeadlessUI, Typescript, and Vite for efficient development. The data for products and user cart items are stored in the browser's Local Storage for a simplified, client-only experience.
 
 ## Features
 
@@ -39,13 +39,13 @@ Welcome to the CoffeeShop E-Commerce Website, a sample React application showcas
 1. Clone the repository:
 
 ```
-git clone https://github.com/dev-zha/coffee-shop.git
+git clone https://github.com/sannlynnhtun-coding/coffee-shop-app.git
 ```
 
 2. Install dependencies:
 
 ```
-cd coffee-shop
+cd coffee-shop-app
 ```
 
 ```
@@ -66,7 +66,7 @@ Sign up for a Mapbox account, create a new project, and obtain an access token. 
 yarn dev
 ```
 
-6. Open your browser and navigate to http://localhost:5173 to see the CoffeeShop E-Commerce Website in action!
+6. Open your browser and navigate to http://localhost:5173 to see the BrewTopia E-Commerce Website in action!
 
 ## Contributors
 

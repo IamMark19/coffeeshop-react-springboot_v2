@@ -17,15 +17,25 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 interface MapComponentProps {
   onCoordChange?: (value: LatLng) => void;
+  center?: LatLng;
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({ onCoordChange }) => {
+const MapComponent: React.FC<MapComponentProps> = ({
+  onCoordChange,
+  center,
+}) => {
   const { address } = useUserAddress();
-  const initLoc = address?.coordinates || defaultCoordinate;
+  const initLoc = center || address?.coordinates || defaultCoordinate;
 
   const [position, setPosition] = useState(initLoc);
 
-  const markerRef = useRef(null);
+  useEffect(() => {
+    if (center) {
+      setPosition(center);
+    }
+  }, [center]);
+
+  const markerRef = useRef<L.Marker>(null);
   const eventHandlers = useMemo(
     () => ({
       dragend() {
@@ -43,6 +53,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onCoordChange }) => {
   return (
     <div className='relative w-full h-full'>
       <MapContainer
+        key={JSON.stringify(position)}
         style={{
           height: '100%',
         }}
