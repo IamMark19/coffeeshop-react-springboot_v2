@@ -1,12 +1,14 @@
 import { CoffeeProduct } from '@/types';
-import coffeeData from '@/data/product.json';
+import axios from 'axios';
 
-export function getAllCoffee(): CoffeeProduct[] {
-  return coffeeData as CoffeeProduct[];
+const API_URL = '/api/v1/products';
+
+export async function getAllCoffee(): Promise<CoffeeProduct[]> {
+  const response = await axios.get(API_URL);
+  return response.data;
 }
 
-export function getCoffeeById(id: string): CoffeeProduct {
-  const coffees = getAllCoffee();
-
-  return coffees?.filter((c) => c.id === id)[0];
+export async function getCoffeeById(id: string): Promise<CoffeeProduct> {
+  const response = await axios.get(`${API_URL}/${id}`);
+  return response.data;
 }

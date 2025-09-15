@@ -9,13 +9,13 @@ export default function ProductInfo({ product }: ProductInfoProps) {
   return (
     <div>
       <p className="text-xl font-semibold text-neutral-800">
-        {product?.displayName}
+        {product?.name}
       </p>
       <p className="text-sm font-normal text-neutral-400 mt-1">
         {product?.description}
       </p>
       <p className="text-lg font-semibold text-primary-600 mt-2">
-        {priceWithSign(product?.prices.small || 0)}
+        {priceWithSign(product?.variants[0].price || 0)}
       </p>
     </div>
   );

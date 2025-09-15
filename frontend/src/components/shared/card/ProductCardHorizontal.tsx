@@ -19,20 +19,20 @@ export default function ProductCardHorizontal({ coffee }: ProductCardProps) {
     >
       <img
         src={coffee.image}
-        alt={coffee.displayName}
+        alt={coffee.name}
         className="w-24 h-24 object-cover bg-gray-300 rounded-xl"
       />
       <div className="flex flex-col justify-between h-full pl-2">
         <div>
           <p className="text-left text-lg font-bold text-neutral-800 line-clamp-1">
-            {coffee.displayName}
+            {coffee.name}
           </p>
           <p className="text-left text-xs font-medium text-neutral-500 line-clamp-2">
             {coffee.description}
           </p>
         </div>
         <p className="text-left font-semibold text-teal-900">
-          {priceWithSign(coffee.prices.small)}
+          {priceWithSign(coffee.variants[0].price)}
         </p>
       </div>
       <div className="absolute bottom-2 right-2">

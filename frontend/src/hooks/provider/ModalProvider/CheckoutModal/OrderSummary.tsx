@@ -19,13 +19,16 @@ export default function OrderSummary() {
             >
               <td className="text-left w-[2rem]">{`${item.quantity}x `}</td>
               <td className="text-left w-[calc(100%-9rem)] line-clamp-1">
-                {item.product.displayName}
+                {item.product.name}
                 <span className="text-gray-400 text-xs capitalize ml-1">
                   ({item.size})
                 </span>
               </td>
               <td className="text-right w-[7rem] overflow-hidden pl-2">
-                {priceWithSign(item.product.prices[item.size] * item.quantity)}
+                {priceWithSign(
+                  item.product.variants.find((v) => v.size === item.size)
+                    ?.price * item.quantity
+                )}
               </td>
             </tr>
           ))}

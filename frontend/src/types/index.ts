@@ -24,13 +24,20 @@ export enum CoffeeType {
   Iced = 'iced',
 }
 
+export interface ProductVariant {
+  id: number;
+  size: CoffeeSize;
+  price: number;
+  stock: number;
+}
+
 export interface CoffeeProduct {
   id: string;
-  displayName: string;
-  type: CoffeeType;
-  prices: Record<CoffeeSize, number>;
+  name: string;
   description: string;
+  variants: ProductVariant[];
   image: string;
+  type: CoffeeType;
 }
 
 export interface CartItem {
@@ -38,6 +45,7 @@ export interface CartItem {
   product: CoffeeProduct;
   quantity: number;
   size: CoffeeSize;
+  productVariantId: number;
 }
 
 export enum DeliOption {
@@ -65,8 +73,7 @@ export interface Customer {
 }
 
 export interface OrderItem {
-  productId: string;
-  productName: string;
+  productVariantId: number;
   quantity: number;
   price: number;
   size: CoffeeSize;

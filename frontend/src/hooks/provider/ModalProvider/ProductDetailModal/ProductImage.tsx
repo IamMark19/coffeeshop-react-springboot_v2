@@ -11,7 +11,7 @@ export default function ProductImage({ product, onClose }: ProductImageProps) {
     <div className="relative w-full h-56 bg-gray-300">
       <img
         src={product?.image}
-        alt={product?.displayName}
+        alt={product?.name}
         className="w-full h-full object-cover"
       />
       <button
