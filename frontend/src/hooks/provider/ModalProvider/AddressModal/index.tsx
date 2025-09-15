@@ -2,14 +2,19 @@ import { useState } from 'react';
 import { LatLng, UserAddress } from '@/types';
 import useDebounce from '@/hooks/useDebounce';
 import { useUserAddress } from '@/hooks/useUserAddress';
-import MapComponent from '@/components/shared/MapComponent';
 import BaseModal from '@/components/shared/modal/BaseModal';
 import StickyModalHeader from '../StickyModalHeader';
+import React from 'react';
+const MapComponent = React.lazy(
+  () => import('@/components/shared/MapComponent')
+);
 import FlexContainer from '../FlexContainer';
 import FullHeightContainer from '../FullHeightContainer';
 import ControlButtons from './ControlButtons';
 import InputBox from './InputBox';
 import useAddress from './useAddress';
+import MapSearchBox from './MapSearchBox';
+import { getCoordFromAddress } from '@/service/nominatimGeoCoding';
 
 interface AddressModalProps {
   show: boolean;
@@ -20,7 +25,12 @@ export default function AddressModal({ show, onClose }: AddressModalProps) {
   // Auth Provider
   const { address: userAddress, updateAddress } = useUserAddress();
   // Input
-  const [coordinate, setCoordinate] = useState<LatLng | null>(null);
+  const [coordinate, setCoordinate] = useState<LatLng | null>(
+    userAddress?.coordinates || null
+  );
+  const [mapCenter, setMapCenter] = useState<LatLng | undefined>(
+    userAddress?.coordinates
+  );
   const deferredCord = useDebounce(coordinate);
 
   const { address, setAddress, isLoading } = useAddress(
@@ -32,6 +42,14 @@ export default function AddressModal({ show, onClose }: AddressModalProps) {
 
   const handleCoordChange = (newCoor: LatLng) => {
     setCoordinate(newCoor);
+  };
+
+  const handleSearch = async (searchTerm: string) => {
+    const newCoord = await getCoordFromAddress(searchTerm);
+    if (newCoord) {
+      setCoordinate(newCoord);
+      setMapCenter(newCoord);
+    }
   };
 
   const handelConfirm = () => {
@@ -55,8 +73,16 @@ export default function AddressModal({ show, onClose }: AddressModalProps) {
             onChange={setAddress}
             isLoading={isLoading}
           />
+          <MapSearchBox onSearch={handleSearch} />
           <div className="w-full h-80 sm:h-72 bg-gray-300 rounded-lg overflow-hidden mt-4">
-            <MapComponent onCoordChange={handleCoordChange} />
+            <React.Suspense
+              fallback={<div className="w-full h-full bg-gray-300" />}
+            >
+              <MapComponent
+                onCoordChange={handleCoordChange}
+                center={mapCenter}
+              />
+            </React.Suspense>
           </div>
           <ControlButtons
             onCancelClick={onClose}

@@ -1,6 +1,6 @@
 import { CoffeeSize, DeliOption, LatLng, PaymentMethod } from '@/types';
 
-export const APP_NAME = "Coffee Shop";
+export const APP_NAME = "BrewTopia";
 
 export const GOOGLE_OAUTH_CLIENT_ID = import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID;
 

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.coffeeshop</groupId>
-	<artifactId>coffee-management-system</artifactId>
+	<artifactId>brewtopia</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>coffee-management-system</name>
-	<description>Demo project for Spring Boot</description>
+	<name>brewtopia</name>
+	<description>BrewTopia project for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
