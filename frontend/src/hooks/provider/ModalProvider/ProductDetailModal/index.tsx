@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import BaseModal from '@/components/shared/modal/BaseModal';
-import { CoffeeProduct } from '@/types';
+import { CoffeeProduct, CoffeeSize } from '@/types';
 import Footer from './Footer';
 import ProductSizeSwitch from './ProductSizeSwitch';
 import ProductInfo from './ProductInfo';
@@ -14,6 +15,7 @@ export default function ProductDetailModal({
   product,
   onClose,
 }: ProductDetailModalProps) {
+  const [size, setSize] = useState<CoffeeSize>(CoffeeSize.SMALL);
   return (
     <BaseModal show={!!product} onClose={onClose}>
       {product && (
@@ -22,9 +24,9 @@ export default function ProductDetailModal({
           <div className="p-4 pb-8">
             <ProductInfo product={product} />
             <hr className="my-4" />
-            <ProductSizeSwitch />
+            <ProductSizeSwitch size={size} onSizeChange={setSize} />
           </div>
-          <Footer product={product} onClose={onClose} />
+          <Footer product={product} size={size} onClose={onClose} />
         </>
       )}
     </BaseModal>

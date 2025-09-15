@@ -26,7 +26,8 @@ export default function ProductCardBgImage({ coffee }: ProductCardProps) {
       </div>
       <div className="absolute bottom-0 right-0 p-3">
         <span className="bg-white text-sm text-black font-semibold border rounded-xl px-1.5 py-0.5">
-          {priceWithSign(coffee.price)}
+          {/* Display the price for the small size as default */}
+          {priceWithSign(coffee.prices.small)}
         </span>
       </div>
     </button>

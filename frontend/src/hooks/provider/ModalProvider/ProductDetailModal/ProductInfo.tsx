@@ -15,7 +15,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         {product?.description}
       </p>
       <p className="text-lg font-semibold text-primary-600 mt-2">
-        {priceWithSign(product?.price || 0)}
+        {priceWithSign(product?.prices.small || 0)}
       </p>
     </div>
   );

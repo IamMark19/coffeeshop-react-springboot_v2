@@ -1,15 +1,20 @@
 import { useState } from 'react';
-import { CoffeeProduct } from '@/types';
+import { CoffeeProduct, CoffeeSize } from '@/types';
 import ButtonFilled from '@/components/shared/button/ButtonFilled';
 import CounterInput from '@/components/shared/CounterInput';
 import { useShoppingCart } from '@/hooks/useShoppingCart';
 
 interface ProductDetailModalProps {
   product: CoffeeProduct;
+  size: CoffeeSize;
   onClose: () => void;
 }
 
-export default function Footer({ product, onClose }: ProductDetailModalProps) {
+export default function Footer({
+  product,
+  size,
+  onClose,
+}: ProductDetailModalProps) {
   // Shopping Cart
   const { addToCart } = useShoppingCart();
   // Local State
@@ -22,7 +27,7 @@ export default function Footer({ product, onClose }: ProductDetailModalProps) {
   };
 
   const handelAddToCart = () => {
-    addToCart(product, quantity);
+    addToCart(product, quantity, size);
     onClose();
   };
 
