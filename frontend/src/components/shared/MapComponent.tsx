@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { LatLng } from '@/types';
 import { useUserAddress } from '@/hooks/useUserAddress';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
