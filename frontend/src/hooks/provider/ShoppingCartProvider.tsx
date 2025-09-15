@@ -1,5 +1,11 @@
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
-import { CartItem, CoffeeProduct, DeliOption, PaymentMethod } from '@/types';
+import {
+  CartItem,
+  CoffeeProduct,
+  CoffeeSize,
+  DeliOption,
+  PaymentMethod,
+} from '@/types';
 import ShoppingCartContext from '../context/ShoppingCartContext';
 import { getSumFromArr } from '@/utils/helper';
 import { defaultDeliFee } from '@/constants/constants';
@@ -15,46 +21,47 @@ const ShoppingCartProvider: React.FC<ShoppingCartProviderProps> = ({
   const [deliOption, setDeliOption] = useState(DeliOption.DELIVER);
   const [paymentMethod, setPaymentMethod] = useState(PaymentMethod.CASH);
 
-  const cartItemIds = items?.map((ci) => ci.product.id);
   const itemCount = items.length;
   const subTotal = getSumFromArr(
-    items?.map((item) => item.product.price * item.quantity)
+    items?.map((item) => item.product.prices[item.size] * item.quantity)
   );
   const deliFee = deliOption === DeliOption.DELIVER ? defaultDeliFee : 0;
   const totalPayment = subTotal + deliFee;
 
-  const addToCart = (product: CoffeeProduct, quantity: number) => {
-    if (!cartItemIds.includes(product.id)) {
+  const addToCart = (
+    product: CoffeeProduct,
+    quantity: number,
+    size: CoffeeSize
+  ) => {
+    const itemId = `${product.id}-${size}`;
+    const existingItem = items.find((item) => item.id === itemId);
+
+    if (!existingItem) {
       const newItem: CartItem = {
+        id: itemId,
         product,
         quantity,
+        size,
       };
       setItems((prevCart) => [...prevCart, newItem]);
     } else {
-      updateQuantity(product.id, quantity);
+      updateQuantity(itemId, existingItem.quantity + quantity);
     }
   };
 
-  const updateQuantity = (productId: string, newQuantity: number) => {
+  const updateQuantity = (itemId: string, newQuantity: number) => {
     setItems((prevCart) =>
       prevCart.map((item) => {
-        if (item.product.id === productId) {
-          const newItem: CartItem = {
-            ...item,
-            quantity: newQuantity,
-          };
-          return newItem;
-        } else {
-          return item;
+        if (item.id === itemId) {
+          return { ...item, quantity: newQuantity };
         }
+        return item;
       })
     );
   };
 
-  const removeFromCart = (productId: string) => {
-    setItems((prevCart) =>
-      prevCart.filter((item) => item.product.id !== productId)
-    );
+  const removeFromCart = (itemId: string) => {
+    setItems((prevCart) => prevCart.filter((item) => item.id !== itemId));
   };
 
   const updateDeliOption = useCallback((value: DeliOption) => {

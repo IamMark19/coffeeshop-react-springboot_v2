@@ -14,15 +14,18 @@ export default function OrderSummary() {
         <tbody className='space-y-2'>
           {items?.map((item) => (
             <tr
-              key={item.product.id}
+              key={item.id}
               className="flex items-center justify-between text-sm font-normal text-neutral-800"
             >
               <td className="text-left w-[2rem]">{`${item.quantity}x `}</td>
               <td className="text-left w-[calc(100%-9rem)] line-clamp-1">
                 {item.product.displayName}
+                <span className="text-gray-400 text-xs capitalize ml-1">
+                  ({item.size})
+                </span>
               </td>
               <td className="text-right w-[7rem] overflow-hidden pl-2">
-                {priceWithSign(item.product.price * item.quantity)}
+                {priceWithSign(item.product.prices[item.size] * item.quantity)}
               </td>
             </tr>
           ))}

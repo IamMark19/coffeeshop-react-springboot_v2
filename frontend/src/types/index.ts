@@ -28,14 +28,16 @@ export interface CoffeeProduct {
   id: string;
   displayName: string;
   type: CoffeeType;
-  price: number;
+  prices: Record<CoffeeSize, number>;
   description: string;
   image: string;
 }
 
 export interface CartItem {
+  id: string;
   product: CoffeeProduct;
   quantity: number;
+  size: CoffeeSize;
 }
 
 export enum DeliOption {
@@ -67,6 +69,7 @@ export interface OrderItem {
   productName: string;
   quantity: number;
   price: number;
+  size: CoffeeSize;
 }
 
 export interface DeliveryOrder {

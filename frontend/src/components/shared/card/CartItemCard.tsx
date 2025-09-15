@@ -12,14 +12,14 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ cartItem }) => {
   // Shopping Cart
   const { updateQuantity, removeFromCart } = useShoppingCart();
   // Local Variable
-  const { product, quantity } = cartItem;
-  const totalAmount = product.price * quantity;
+  const { id, product, quantity, size } = cartItem;
+  const totalAmount = product.prices[size] * quantity;
 
   const handleQuantityChange = (value: number) => {
     if (value >= 1) {
-      updateQuantity(product.id, value);
+      updateQuantity(id, value);
     } else {
-      removeFromCart(product.id);
+      removeFromCart(id);
     }
   };
 
@@ -36,6 +36,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ cartItem }) => {
             <p className="text-primary-700 font-semibold ">
               {product.displayName}
             </p>
+            <p className="text-gray-400 text-xs capitalize">{size}</p>
           </div>
           <CounterInputSm value={quantity} onChange={handleQuantityChange} />
         </div>
@@ -46,7 +47,7 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ cartItem }) => {
         </p>
         {quantity > 1 && (
           <span className="text-gray-400 text-xs">{`${priceWithSign(
-            product.price
+            product.prices[size]
           )} each`}</span>
         )}
       </div>

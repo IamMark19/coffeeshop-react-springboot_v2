@@ -5,9 +5,6 @@ import { classNames, priceWithSign } from '@/utils/helper';
 import { ProductCardProps } from './type';
 
 export default function ProductCardHorizontal({ coffee }: ProductCardProps) {
-  // Shopping Cart
-  const { items } = useShoppingCart();
-  const isSameItem = items?.filter((i) => i.product.id === coffee.id)[0];
   // Modal Provider
   const { showProductModal } = useModal();
 
@@ -35,15 +32,12 @@ export default function ProductCardHorizontal({ coffee }: ProductCardProps) {
           </p>
         </div>
         <p className="text-left font-semibold text-teal-900">
-          {priceWithSign(coffee.price)}
+          {priceWithSign(coffee.prices.small)}
         </p>
       </div>
       <div className="absolute bottom-2 right-2">
-        <div className={classNames(
-          "inline-flex items-center justify-center w-7 h-7 rounded-full",
-          isSameItem? "text-primary border border-primary" : "bg-primary text-white"
-        )}>
-          {isSameItem ? <span className='text-sm font-semibold'>{isSameItem.quantity}</span> : <PlusIcon className="h-5 w-5" />}
+        <div className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-primary text-white">
+          <PlusIcon className="h-5 w-5" />
         </div>
       </div>
     </button>

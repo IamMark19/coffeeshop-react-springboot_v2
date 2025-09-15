@@ -1,18 +1,22 @@
-import { useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { classNames } from '@/utils/helper';
 import Title6 from '@/components/shared/typo/Title6';
 import { CoffeeSize } from '@/types';
 import { coffeeSizeOptions } from '@/constants/constants';
 
-export default function ProductSizeSwitch() {
-  // Local State
-  const [size, setSize] = useState<CoffeeSize>(CoffeeSize.SMALL);
+interface ProductSizeSwitchProps {
+  size: CoffeeSize;
+  onSizeChange: (size: CoffeeSize) => void;
+}
 
+export default function ProductSizeSwitch({
+  size,
+  onSizeChange,
+}: ProductSizeSwitchProps) {
   return (
     <div>
       <Title6 className="mb-2">Size</Title6>
-      <RadioGroup value={size} onChange={setSize}>
+      <RadioGroup value={size} onChange={onSizeChange}>
         <RadioGroup.Label className="sr-only">Coffee size</RadioGroup.Label>
         <div className="flex flex-row gap-4 ">
           {coffeeSizeOptions.map((option) => (

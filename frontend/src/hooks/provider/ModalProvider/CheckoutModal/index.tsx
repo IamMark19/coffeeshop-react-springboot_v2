@@ -58,7 +58,8 @@ export default function CheckoutModal({ show, onClose }: CheckoutModalProps) {
         productId: ci.product.id,
         productName: ci.product.displayName,
         quantity: ci.quantity,
-        price: ci.product.price * ci.quantity,
+        price: ci.product.prices[ci.size] * ci.quantity,
+        size: ci.size,
       };
     });
     return {
