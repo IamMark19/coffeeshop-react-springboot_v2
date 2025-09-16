@@ -24,9 +24,14 @@ export default function ProductCardHorizontal({ coffee }: ProductCardProps) {
       />
       <div className="flex flex-col justify-between h-full pl-2">
         <div>
-          <p className="text-left text-lg font-bold text-neutral-800 line-clamp-1">
-            {coffee.name}
-          </p>
+          <div className="flex items-center">
+            <p className="text-left text-lg font-bold text-neutral-800 line-clamp-1">
+              {coffee.name}
+            </p>
+            <p className="ml-2 text-xs font-semibold text-white bg-primary-500 rounded-full px-2 py-0.5">
+              {coffee.type.toUpperCase()}
+            </p>
+          </div>
           <p className="text-left text-xs font-medium text-neutral-500 line-clamp-2">
             {coffee.description}
           </p>

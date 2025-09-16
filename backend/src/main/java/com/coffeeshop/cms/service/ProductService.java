@@ -36,6 +36,8 @@ public class ProductService {
         productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setDescription(product.getDescription());
+        productDto.setImage(product.getImage());
+        productDto.setType(product.getType());
         productDto.setVariants(product.getVariants().stream()
                 .map(variant -> {
                     ProductVariantDto variantDto = new ProductVariantDto();
