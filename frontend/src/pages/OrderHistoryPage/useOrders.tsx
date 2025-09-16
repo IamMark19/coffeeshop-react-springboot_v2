@@ -11,7 +11,7 @@ export default function useOrders() {
     const getData = async () => {
       setLoding(true);
       await fakeTimer(1000);
-      const res = getOrderList();
+      const res = await getOrderList();
       setData(res);
       setLoding(false);
     };
