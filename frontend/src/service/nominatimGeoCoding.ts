@@ -13,7 +13,7 @@ export const getAddrFromCoordinate = async (
     });
 
     if (response.status === 200) {
-      const data = JSON.parse(response.data);
+      const data = response.data;
       const addr = data?.display_name;
       return addr || '';
     }
@@ -34,7 +34,7 @@ export const getCoordFromAddress = async (
     });
 
     if (response.status === 200) {
-      const data = JSON.parse(response.data);
+      const data = response.data;
       if (data.length > 0) {
         const { lat, lon } = data[0];
         return { lat: parseFloat(lat), lng: parseFloat(lon) };

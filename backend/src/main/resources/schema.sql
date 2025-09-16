@@ -1,26 +1,26 @@
 -- Users table
 CREATE TABLE users (
-    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL,
-    created_at DATETIME DEFAULT GETDATE()
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Products table
 CREATE TABLE products (
-    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description TEXT,
+    description VARCHAR(1000),
     image VARCHAR(255),
     type VARCHAR(50), -- hot / iced / frappe, etc.
-    created_at DATETIME DEFAULT GETDATE()
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Product Variants
 CREATE TABLE product_variants (
-    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     product_id BIGINT NOT NULL,
     size VARCHAR(50),
     price DECIMAL(10,2),
@@ -30,9 +30,9 @@ CREATE TABLE product_variants (
 
 -- Orders
 CREATE TABLE orders (
-    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT NOT NULL,
-    order_date DATETIME DEFAULT GETDATE(),
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR(50),
     total DECIMAL(10,2),
     FOREIGN KEY (user_id) REFERENCES users(id)
@@ -40,7 +40,7 @@ CREATE TABLE orders (
 
 -- Order Items
 CREATE TABLE order_items (
-    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     order_id BIGINT NOT NULL,
     product_variant_id BIGINT NOT NULL,
     quantity INT,
@@ -51,9 +51,9 @@ CREATE TABLE order_items (
 
 -- Inventory Logs
 CREATE TABLE inventory_logs (
-    id BIGINT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     product_variant_id BIGINT NOT NULL,
     change_qty INT,
-    log_date DATETIME DEFAULT GETDATE(),
+    log_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_variant_id) REFERENCES product_variants(id)
 );

@@ -33,28 +33,27 @@ public class OrderService {
     private UserRepository userRepository;
 
     public List<OrderDto> getAllOrders() {
-        // TODO: Implement method
-        return Collections.emptyList();
+        return orderRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     public List<OrderDto> getOrdersByStatus(OrderStatus status) {
-        // TODO: Implement method
-        return Collections.emptyList();
+        return orderRepository.findByStatus(status).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     public List<OrderDto> getOrdersByDateRange(LocalDate startDate, LocalDate endDate) {
-        // TODO: Implement method
-        return Collections.emptyList();
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+        return orderRepository.findByOrderDateBetween(startDateTime, endDateTime).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     public List<OrderDto> getOrdersByCustomer(Long customerId) {
-        // TODO: Implement method
-        return Collections.emptyList();
+        User user = userRepository.findById(customerId).orElseThrow(() -> new RuntimeException("User not found"));
+        return orderRepository.findByUser(user).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     public OrderDto getOrderById(Long id) {
-        // TODO: Implement method
-        return null;
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+        return convertToDto(order);
     }
 
     @Transactional
@@ -83,8 +82,17 @@ public class OrderService {
     }
 
     public List<OrderDto> getOrders(OrderStatus status, LocalDate startDate, LocalDate endDate, Long customerId) {
-        // TODO: Implement method with filtering
-        return Collections.emptyList();
+        // This is a simple implementation. A more advanced implementation would use Specifications or Querydsl.
+        if (status != null) {
+            return getOrdersByStatus(status);
+        }
+        if (startDate != null && endDate != null) {
+            return getOrdersByDateRange(startDate, endDate);
+        }
+        if (customerId != null) {
+            return getOrdersByCustomer(customerId);
+        }
+        return getAllOrders();
     }
 
     private OrderDto convertToDto(Order order) {

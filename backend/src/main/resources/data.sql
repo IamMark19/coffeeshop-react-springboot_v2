@@ -1,13 +1,9 @@
-USE coffee_shop;
-GO
-
 -- =====================================
 -- Seed Users
 -- =====================================
 INSERT INTO users (name, email, password, role) VALUES
 ('Alice Johnson', 'alice@example.com', 'password123', 'customer'),
 ('Bob Smith', 'bob@example.com', 'password456', 'admin');
-GO
 
 -- =====================================
 -- Seed Products
@@ -32,7 +28,6 @@ INSERT INTO products (name, type, description, image) VALUES
 ('Iced Latte', 'iced', 'Chilled espresso mixed with cold milk, a refreshing and energizing iced latte.', '/images/coffee/iced-latte.jpeg'),
 ('Iced Matcha', 'iced', 'Cold matcha green tea served over ice, a vibrant and revitalizing drink.', '/images/coffee/iced-matcha.jpeg'),
 ('Iced Mocha', 'iced', 'Iced coffee with a decadent blend of chocolate and espresso, a delightful cold chocolate coffee treat.', '/images/coffee/iced-mocha.jpeg');
-GO
 
 -- =====================================
 -- Seed Product Variants (small/medium/large)
@@ -58,7 +53,6 @@ INSERT INTO product_variants (product_id, size, price, stock) VALUES
 (17,'small',2000,100),(17,'medium',2500,80),(17,'large',3000,50),
 (18,'small',3000,100),(18,'medium',3500,80),(18,'large',4000,50),
 (19,'small',3000,100),(19,'medium',3500,80),(19,'large',4000,50);
-GO
 
 -- =====================================
 -- Seed Orders
@@ -66,7 +60,6 @@ GO
 INSERT INTO orders (user_id, order_date, status, total) VALUES
 (1,'2025-09-15 10:00:00','pending',8000),
 (2,'2025-09-15 11:30:00','completed',6000);
-GO
 
 -- =====================================
 -- Seed Order Items
@@ -76,7 +69,6 @@ INSERT INTO order_items (order_id, product_variant_id, quantity, price) VALUES
 (1,23,1,2000),   -- Small Cappuccino
 (2,43,1,3000),   -- Large Latte
 (2,57,1,3000);   -- Medium Iced Caramel Macchiato
-GO
 
 -- =====================================
 -- Seed Inventory Logs
@@ -86,4 +78,3 @@ INSERT INTO inventory_logs (product_variant_id, change_qty, log_date) VALUES
 (23,-1,'2025-09-15 10:05:00'),
 (43,-1,'2025-09-15 11:35:00'),
 (57,-1,'2025-09-15 11:35:00');
-GO
