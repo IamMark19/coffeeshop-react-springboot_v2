@@ -1,9 +1,9 @@
 import { HeartIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import DataCard from './DataCard';
-import { getOrderCount } from '@/service/order';
+import { useOrderCount } from './useOrderCount';
 
 export default function DataCards() {
-  const userOrderCount = getOrderCount();
+  const userOrderCount = useOrderCount();
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 mt-8">
       <DataCard label="Order Count" value={userOrderCount} Icon={ShoppingBagIcon} />
