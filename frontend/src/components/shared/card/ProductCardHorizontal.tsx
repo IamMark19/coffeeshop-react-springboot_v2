@@ -32,7 +32,9 @@ export default function ProductCardHorizontal({ coffee }: ProductCardProps) {
           </p>
         </div>
         <p className="text-left font-semibold text-teal-900">
-          {priceWithSign(coffee.variants[0].price)}
+          {coffee.variants &&
+            coffee.variants.length > 0 &&
+            priceWithSign(coffee.variants[0].price)}
         </p>
       </div>
       <div className="absolute bottom-2 right-2">
