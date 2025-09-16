@@ -23,7 +23,13 @@ const ShoppingCartProvider: React.FC<ShoppingCartProviderProps> = ({
 
   const itemCount = items.length;
   const subTotal = getSumFromArr(
-    items?.map((item) => item.product.prices[item.size] * item.quantity)
+    items?.map((item) => {
+      const variant = item.product.variants.find((v) => v.size === item.size);
+      if (variant) {
+        return variant.price * item.quantity;
+      }
+      return 0;
+    })
   );
   const deliFee = deliOption === DeliOption.DELIVER ? defaultDeliFee : 0;
   const totalPayment = subTotal + deliFee;
