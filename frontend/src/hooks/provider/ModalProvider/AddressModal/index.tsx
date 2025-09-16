@@ -13,8 +13,8 @@ import FullHeightContainer from '../FullHeightContainer';
 import ControlButtons from './ControlButtons';
 import InputBox from './InputBox';
 import useAddress from './useAddress';
-import MapSearchBox from './MapSearchBox';
 import { getCoordFromAddress } from '@/service/nominatimGeoCoding';
+import { useEffect } from 'react';
 
 interface AddressModalProps {
   show: boolean;
@@ -37,6 +37,14 @@ export default function AddressModal({ show, onClose }: AddressModalProps) {
     deferredCord,
     userAddress?.fullAddress || ''
   );
+
+  const debouncedAddress = useDebounce(address, 500);
+
+  useEffect(() => {
+    if (debouncedAddress) {
+      handleSearch(debouncedAddress);
+    }
+  }, [debouncedAddress]);
 
   const confirmBtnDisabled = !coordinate || address.length > 255;
 
@@ -73,7 +81,6 @@ export default function AddressModal({ show, onClose }: AddressModalProps) {
             onChange={setAddress}
             isLoading={isLoading}
           />
-          <MapSearchBox onSearch={handleSearch} />
           <div className="w-full h-80 sm:h-72 bg-gray-300 rounded-lg overflow-hidden mt-4">
             <React.Suspense
               fallback={<div className="w-full h-full bg-gray-300" />}
