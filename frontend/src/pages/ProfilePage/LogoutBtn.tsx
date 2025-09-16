@@ -3,7 +3,6 @@ import { googleLogout } from '@react-oauth/google';
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserAddress } from '@/hooks/useUserAddress';
-import { removeAllOrders } from '@/service/order';
 import ConfirmDialog from '@/components/shared/dialog/ConfirmDialog';
 
 export default function LogoutBtn() {
@@ -26,7 +25,6 @@ export default function LogoutBtn() {
     // Clear LocalStorage Data
     logoutFromApp();
     removeAddress();
-    removeAllOrders();
   };
 
   return (
