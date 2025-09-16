@@ -23,6 +23,8 @@ public class Product {
 
     private String name;
     private String description;
+    private String image;
+    private String type;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductVariant> variants;
