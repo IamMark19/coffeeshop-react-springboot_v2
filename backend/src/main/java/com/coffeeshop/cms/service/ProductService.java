@@ -6,6 +6,7 @@ import com.coffeeshop.cms.model.Product;
 import com.coffeeshop.cms.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,12 +17,14 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Transactional(readOnly = true)
     public List<ProductDto> getAllProducts() {
         return productRepository.findAll().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public ProductDto getProductById(Long id) {
         return productRepository.findById(id)
                 .map(this::convertToDto)
