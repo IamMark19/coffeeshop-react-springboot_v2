@@ -26,3 +26,15 @@ export async function getOrderList(): Promise<DeliveryOrder[]> {
     return [];
   }
 }
+
+export async function getOrderById(
+  orderId: string
+): Promise<DeliveryOrder | null> {
+  try {
+    const response = await axios.get(`${API_URL}/${orderId}`);
+    return response.data;
+  } catch (err) {
+    console.log('Error:: getOrderById :', err);
+    return null;
+  }
+}
