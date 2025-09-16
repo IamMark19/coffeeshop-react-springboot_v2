@@ -11,8 +11,8 @@ export default function useOrder(id: string | undefined) {
     const getData = async () => {
       setLoding(true);
       await fakeTimer(1000);
-      const res = getOrderById(id!);
-      if(res){
+      const res = await getOrderById(id!);
+      if (res) {
         setData(res);
       }
       setLoding(false);
