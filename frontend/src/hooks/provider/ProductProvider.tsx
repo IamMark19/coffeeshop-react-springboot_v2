@@ -8,18 +8,16 @@ interface ProductProviderProps {
 }
 
 const ProductProvider: React.FC<ProductProviderProps> = ({ children }) => {
-  const [coffees, setCoffees] = React.useState<CoffeeProduct[]>([]);
-  const icedCoffees: CoffeeProduct[] = coffees?.filter(
-    (c) => c.type === CoffeeType.Iced
-  );
-  const hotCoffees: CoffeeProduct[] = coffees?.filter(
-    (c) => c.type === CoffeeType.Hot
-  );
+  const [coffees, setCoffees] = React.useState<CoffeeProduct[] | null>(null);
+  const icedCoffees: CoffeeProduct[] =
+    coffees?.filter((c) => c.type === CoffeeType.Iced) || [];
+  const hotCoffees: CoffeeProduct[] =
+    coffees?.filter((c) => c.type === CoffeeType.Hot) || [];
 
   // Get Coffee List
   useEffect(() => {
-    const fetchCoffeeList = () => {
-      const data = getAllCoffee();
+    const fetchCoffeeList = async () => {
+      const data = await getAllCoffee();
       setCoffees(data);
     };
 
