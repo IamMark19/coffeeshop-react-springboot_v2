@@ -16,3 +16,13 @@ export async function addOrder(
     return null;
   }
 }
+
+export async function getOrderList(): Promise<DeliveryOrder[]> {
+  try {
+    const response = await axios.get(API_URL);
+    return response.data;
+  } catch (err) {
+    console.log('Error:: getOrderList :', err);
+    return [];
+  }
+}
