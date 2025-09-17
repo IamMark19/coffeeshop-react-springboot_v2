@@ -4,7 +4,7 @@ import { CartItem, CoffeeProduct, DeliOption, PaymentMethod } from '@/types';
 export interface ShoppingCartContextProps {
   // Cart Item
   items: CartItem[];
-  addToCart: (product: CoffeeProduct, quantity: number) => void;
+  addToCart: (product: CoffeeProduct, quantity: number, size: CoffeeSize) => void;
   updateQuantity: (productId: string, newQuantity: number) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;

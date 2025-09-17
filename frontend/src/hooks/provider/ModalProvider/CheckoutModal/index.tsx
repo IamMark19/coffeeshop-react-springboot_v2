@@ -87,7 +87,7 @@ export default function CheckoutModal({ show, onClose }: CheckoutModalProps) {
     await fakeTimer(2000);
     const newOrder = getOrderData();
 
-    const res = addOrder(newOrder);
+    const res = await addOrder(newOrder);
     setLoading(false);
     // Clear Cart Data
     clearCart();
