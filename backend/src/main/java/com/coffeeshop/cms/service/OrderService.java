@@ -67,7 +67,18 @@ public class OrderService {
 
         List<OrderItem> orderItems = orderDto.getOrderItems().stream().map(itemDto -> {
             OrderItem orderItem = new OrderItem();
-            ProductVariant variant = productVariantRepository.findById(itemDto.getProductVariantId()).orElseThrow(() -> new RuntimeException("Product variant not found"));
+            ProductVariant variant = productVariantRepository.findById(itemDto.getProductVariantId())
+                    .orElseThrow(() -> new RuntimeException("Product variant not found"));
+
+            // Check stock
+            if (variant.getStock() < itemDto.getQuantity()) {
+                throw new RuntimeException("Not enough stock for product variant: " + variant.getId());
+            }
+
+            // Decrease stock
+            variant.setStock(variant.getStock() - itemDto.getQuantity());
+            productVariantRepository.save(variant);
+
             orderItem.setProductVariant(variant);
             orderItem.setQuantity(itemDto.getQuantity());
             orderItem.setPrice(itemDto.getPrice());
