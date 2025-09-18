@@ -7,9 +7,6 @@ import com.coffeeshop.cms.model.OrderItem;
 import com.coffeeshop.cms.model.ProductVariant;
 import com.coffeeshop.cms.model.User;
 import com.coffeeshop.cms.model.enums.OrderStatus;
-import com.coffeeshop.cms.model.OrderItem;
-import com.coffeeshop.cms.model.ProductVariant;
-import com.coffeeshop.cms.model.User;
 import com.coffeeshop.cms.model.enums.OrderStatus;
 import com.coffeeshop.cms.repository.OrderItemRepository;
 import com.coffeeshop.cms.repository.OrderRepository;
@@ -67,19 +64,19 @@ public class OrderService {
     @Transactional
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = new Order();
-        User user = userRepository.findById(orderDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(orderDto.getCustomer().getId()).orElseThrow(() -> new RuntimeException("User not found"));
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(OrderStatus.PENDING);
-        order.setTotal(orderDto.getTotal());
+        order.setTotal(orderDto.getTotalPayment());
         order.setOrderItems(Collections.emptyList());
 
         // Save the order first to get an ID
         Order savedOrder = orderRepository.save(order);
 
-        List<OrderItem> orderItems = orderDto.getOrderItems().stream().map(itemDto -> {
+        List<OrderItem> orderItems = orderDto.getItems().stream().map(itemDto -> {
             OrderItem orderItem = new OrderItem();
-            ProductVariant variant = productVariantRepository.findById(itemDto.getProductVariantId())
+            ProductVariant variant = productVariantRepository.findById(itemDto.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product variant not found"));
 
             // Check stock
@@ -120,19 +117,22 @@ public class OrderService {
     private OrderDto convertToDto(Order order) {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
-        orderDto.setUserId(order.getUser().getId());
-        orderDto.setCustomerName(order.getUser().getName());
-        orderDto.setOrderDate(order.getOrderDate());
+        CustomerDto customerDto = new CustomerDto();
+        customerDto.setId(order.getUser().getId());
+        customerDto.setName(order.getUser().getName());
+        orderDto.setCustomer(customerDto);
+        orderDto.setDate(order.getOrderDate());
         orderDto.setStatus(order.getStatus().name());
-        orderDto.setTotal(order.getTotal());
-        orderDto.setOrderItems(order.getOrderItems().stream().map(this::convertOrderItemToDto).collect(Collectors.toList()));
+        orderDto.setTotalPayment(order.getTotal());
+        orderDto.setItems(order.getOrderItems().stream().map(this::convertOrderItemToDto).collect(Collectors.toList()));
         return orderDto;
     }
 
     private OrderItemDto convertOrderItemToDto(OrderItem orderItem) {
         OrderItemDto orderItemDto = new OrderItemDto();
         orderItemDto.setId(orderItem.getId());
-        orderItemDto.setProductVariantId(orderItem.getProductVariant().getId());
+        orderItemDto.setProductId(orderItem.getProductVariant().getProduct().getId());
+        orderItemDto.setProductName(orderItem.getProductVariant().getProduct().getName());
         orderItemDto.setQuantity(orderItem.getQuantity());
         orderItemDto.setPrice(orderItem.getPrice());
         orderItemDto.setSize(orderItem.getProductVariant().getSize());
