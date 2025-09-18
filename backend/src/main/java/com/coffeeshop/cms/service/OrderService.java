@@ -7,6 +7,11 @@ import com.coffeeshop.cms.model.OrderItem;
 import com.coffeeshop.cms.model.ProductVariant;
 import com.coffeeshop.cms.model.User;
 import com.coffeeshop.cms.model.enums.OrderStatus;
+import com.coffeeshop.cms.model.OrderItem;
+import com.coffeeshop.cms.model.ProductVariant;
+import com.coffeeshop.cms.model.User;
+import com.coffeeshop.cms.model.enums.OrderStatus;
+import com.coffeeshop.cms.repository.OrderItemRepository;
 import com.coffeeshop.cms.repository.OrderRepository;
 import com.coffeeshop.cms.repository.ProductVariantRepository;
 import com.coffeeshop.cms.repository.UserRepository;
@@ -31,6 +36,9 @@ public class OrderService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     public List<OrderDto> getAllOrders() {
         return orderRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
@@ -64,6 +72,10 @@ public class OrderService {
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(OrderStatus.PENDING);
         order.setTotal(orderDto.getTotal());
+        order.setOrderItems(Collections.emptyList());
+
+        // Save the order first to get an ID
+        Order savedOrder = orderRepository.save(order);
 
         List<OrderItem> orderItems = orderDto.getOrderItems().stream().map(itemDto -> {
             OrderItem orderItem = new OrderItem();
@@ -82,13 +94,12 @@ public class OrderService {
             orderItem.setProductVariant(variant);
             orderItem.setQuantity(itemDto.getQuantity());
             orderItem.setPrice(itemDto.getPrice());
-            orderItem.setOrder(order);
-            return orderItem;
+            orderItem.setOrder(savedOrder); // Set the saved order
+            return orderItemRepository.save(orderItem);
         }).collect(Collectors.toList());
 
-        order.setOrderItems(orderItems);
+        savedOrder.setOrderItems(orderItems);
 
-        Order savedOrder = orderRepository.save(order);
         return convertToDto(savedOrder);
     }
 
