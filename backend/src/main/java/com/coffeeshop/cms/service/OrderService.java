@@ -58,7 +58,7 @@ public class OrderService {
     @Transactional
     public OrderDto createOrder(OrderRequestDto orderRequestDto) {
         Order order = new Order();
-        User user = userRepository.findById(orderRequestDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByEmail(orderRequestDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(orderRequestDto.getStatus());

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class OrderRequestDto {
-    private Long userId;
+    private String email;
     private List<OrderItemRequestDto> items;
     private BigDecimal totalPrice;
     private OrderStatus status;
