@@ -12,5 +12,6 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByStatus(OrderStatus status);
     List<Order> findByOrderDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<Order> findByOrderDateAfter(LocalDateTime startDate);
     List<Order> findByUser(com.coffeeshop.cms.model.User user);
 }

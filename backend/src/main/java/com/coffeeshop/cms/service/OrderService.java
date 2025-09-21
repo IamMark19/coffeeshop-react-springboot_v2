@@ -1,13 +1,10 @@
 package com.coffeeshop.cms.service;
 
-import com.coffeeshop.cms.dto.CustomerDto;
-import com.coffeeshop.cms.dto.OrderDto;
-import com.coffeeshop.cms.dto.OrderItemDto;
+import com.coffeeshop.cms.dto.*;
 import com.coffeeshop.cms.model.Order;
 import com.coffeeshop.cms.model.OrderItem;
 import com.coffeeshop.cms.model.ProductVariant;
 import com.coffeeshop.cms.model.User;
-import com.coffeeshop.cms.model.enums.OrderStatus;
 import com.coffeeshop.cms.model.enums.OrderStatus;
 import com.coffeeshop.cms.repository.OrderItemRepository;
 import com.coffeeshop.cms.repository.OrderRepository;
@@ -17,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,10 +34,6 @@ public class OrderService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
-
-    public List<OrderDto> getAllOrders() {
-        return orderRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
-    }
 
     public List<OrderDto> getOrdersByStatus(OrderStatus status) {
         return orderRepository.findByStatus(status).stream().map(this::convertToDto).collect(Collectors.toList());
@@ -63,46 +56,45 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto createOrder(OrderDto orderDto) {
+    public OrderDto createOrder(OrderRequestDto orderRequestDto) {
         Order order = new Order();
-        User user = userRepository.findById(orderDto.getCustomer().getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(orderRequestDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.PENDING);
-        order.setTotal(orderDto.getTotalPayment());
-        order.setOrderItems(Collections.emptyList());
+        order.setStatus(orderRequestDto.getStatus());
 
-        // Save the order first to get an ID
-        Order savedOrder = orderRepository.save(order);
-
-        List<OrderItem> orderItems = orderDto.getItems().stream().map(itemDto -> {
+        List<OrderItem> orderItems = orderRequestDto.getItems().stream().map(itemDto -> {
             OrderItem orderItem = new OrderItem();
-            ProductVariant variant = productVariantRepository.findById(itemDto.getProductId())
+            ProductVariant variant = productVariantRepository.findById(itemDto.getProductVariantId())
                     .orElseThrow(() -> new RuntimeException("Product variant not found"));
 
-            // Check stock
             if (variant.getStock() < itemDto.getQuantity()) {
                 throw new RuntimeException("Not enough stock for product variant: " + variant.getId());
             }
 
-            // Decrease stock
             variant.setStock(variant.getStock() - itemDto.getQuantity());
-            productVariantRepository.save(variant);
+            // No need to save variant here, transactional context will handle it.
 
             orderItem.setProductVariant(variant);
             orderItem.setQuantity(itemDto.getQuantity());
-            orderItem.setPrice(itemDto.getPrice());
-            orderItem.setOrder(savedOrder); // Set the saved order
-            return orderItemRepository.save(orderItem);
+            orderItem.setPrice(variant.getPrice());
+            orderItem.setOrder(order);
+            return orderItem;
         }).collect(Collectors.toList());
 
-        savedOrder.setOrderItems(orderItems);
+        BigDecimal total = orderItems.stream()
+                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        order.setOrderItems(orderItems);
+        order.setTotal(total);
+
+        Order savedOrder = orderRepository.save(order);
 
         return convertToDto(savedOrder);
     }
 
     public List<OrderDto> getOrders(OrderStatus status, LocalDate startDate, LocalDate endDate, Long customerId) {
-        // This is a simple implementation. A more advanced implementation would use Specifications or Querydsl.
         if (status != null) {
             return getOrdersByStatus(status);
         }
@@ -112,20 +104,34 @@ public class OrderService {
         if (customerId != null) {
             return getOrdersByCustomer(customerId);
         }
-        return getAllOrders();
+        return orderRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     private OrderDto convertToDto(Order order) {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
-        CustomerDto customerDto = new CustomerDto();
-        customerDto.setId(order.getUser().getId());
-        customerDto.setName(order.getUser().getName());
-        orderDto.setCustomer(customerDto);
-        orderDto.setDate(order.getOrderDate());
-        orderDto.setStatus(order.getStatus().name());
-        orderDto.setTotalPayment(order.getTotal());
+
+        if (order.getUser() != null) {
+            CustomerDto customerDto = new CustomerDto();
+            customerDto.setId(order.getUser().getId());
+            customerDto.setName(order.getUser().getName());
+            customerDto.setAddress(order.getUser().getAddress());
+            if (order.getUser().getCoordinates() != null) {
+                LatLngDto latLngDto = new LatLngDto();
+                latLngDto.setLat(order.getUser().getCoordinates().getLat());
+                latLngDto.setLng(order.getUser().getCoordinates().getLng());
+                customerDto.setCoordinates(latLngDto);
+            }
+            orderDto.setCustomer(customerDto);
+        }
+
         orderDto.setItems(order.getOrderItems().stream().map(this::convertOrderItemToDto).collect(Collectors.toList()));
+        orderDto.setTotalPayment(order.getTotal());
+        orderDto.setDate(order.getOrderDate());
+        if (order.getStatus() != null) {
+            orderDto.setStatus(order.getStatus().name());
+        }
+
         return orderDto;
     }
 
