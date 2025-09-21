@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+import jakarta.persistence.Embedded;
+
 @Data
 @Entity
 @Table(name = "users")
@@ -22,6 +24,10 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private String address;
+
+    @Embedded
+    private LatLng coordinates;
 
     @Enumerated(EnumType.STRING)
     private Role role;
