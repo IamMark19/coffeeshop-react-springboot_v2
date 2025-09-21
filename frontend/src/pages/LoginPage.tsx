@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
 import { getUserFromGoogleOAuthAPI } from '@/service/googleOAuth';
+import { loginUser } from '@/service/user';
 import PageLoading from '@/components/shared/PageLoading';
 import Title1 from '@/components/shared/typo/Title1';
 import { useAuth } from '@/hooks/useAuth';
@@ -19,18 +20,20 @@ export default function LoginPage() {
 
     const res = await getUserFromGoogleOAuthAPI(access_token);
 
-    setLoading(false);
     if (res?.email) {
-      console.log(res);
-      const loggedInUser: AuthUser = {
-        id: res.id,
-        name: res.name,
+      const backendUser = await loginUser({
         email: res.email,
-        image: res.picture,
-      };
-      loginToApp(loggedInUser, '/');
+        name: res.name,
+      });
+      setLoading(false);
+      if (backendUser) {
+        loginToApp(backendUser, '/');
+      } else {
+        console.log('Error logging in to backend');
+      }
     } else {
-      console.log('Error');
+      setLoading(false);
+      console.log('Error getting user from Google');
     }
   };
 
