@@ -28,7 +28,7 @@ export default function LoginPage() {
       });
       setLoading(false);
       if (backendUser) {
-        loginToApp(backendUser, '/');
+        loginToApp(backendUser, access_token, '/');
       } else {
         console.log('Error logging in to backend');
       }
