@@ -4,29 +4,33 @@ import { useLocalStorage } from '../useLocalStorage';
 import { AuthUser } from '@/types';
 import AuthContext from '../context/AuthContext';
 
-const keyName = 'coffee-shop-auth-user';
+const userKeyName = 'coffee-shop-auth-user';
+const tokenKeyName = 'coffee-shop-auth-token';
 
 type AuthProviderProps = {
   children: JSX.Element | JSX.Element[];
 };
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useLocalStorage<AuthUser>(keyName, null);
+  const [user, setUser] = useLocalStorage<AuthUser>(userKeyName, null);
+  const [token, setToken] = useLocalStorage<string>(tokenKeyName, null);
   // Router
   const navigate = useNavigate();
 
   const login = useCallback(
-    async (data: AuthUser, redirectUrl?: string) => {
+    async (data: AuthUser, accessToken: string, redirectUrl?: string) => {
       setUser(data);
+      setToken(accessToken);
       navigate(redirectUrl || '/', { replace: true });
     },
-    [navigate, setUser]
+    [navigate, setUser, setToken]
   );
 
   const logout = useCallback(() => {
     setUser(null);
+    setToken(null);
     navigate('/login', { replace: true });
-  }, [navigate, setUser]);
+  }, [navigate, setUser, setToken]);
 
   // Event Listener for localstorage changes
   useEffect(() => {
