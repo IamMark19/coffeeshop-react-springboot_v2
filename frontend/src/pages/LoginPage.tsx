@@ -24,6 +24,7 @@ export default function LoginPage() {
       const backendUser = await loginUser({
         email: res.email,
         name: res.name,
+        googleId: res.id,
       });
       setLoading(false);
       if (backendUser) {

@@ -15,6 +15,6 @@ public class UserController {
 
     @PostMapping("/login")
     public UserDto login(@RequestBody LoginRequestDto loginRequestDto) {
-        return userService.findOrCreateUser(loginRequestDto.getEmail(), loginRequestDto.getName());
+        return userService.findOrCreateUser(loginRequestDto.getEmail(), loginRequestDto.getName(), loginRequestDto.getGoogleId());
     }
 }
