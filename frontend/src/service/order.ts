@@ -9,11 +9,9 @@ export type TAddOrder = Omit<DeliveryOrder, 'id' | 'date' | 'image'>;
 const getAuthHeaders = () => {
     const token = localStorage.getItem(tokenKeyName);
     if (token) {
-        // The token from localStorage is a string with quotes, so we need to remove them
-        const parsedToken = JSON.parse(token);
         return {
             headers: {
-                Authorization: `Bearer ${parsedToken}`,
+                Authorization: `Bearer ${token}`,
             },
         };
     }
