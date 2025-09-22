@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,7 @@ public class UserService {
             newUser.setName(name);
             newUser.setGoogleId(googleId);
             newUser.setRole(Role.CUSTOMER);
+            newUser.setPassword(UUID.randomUUID().toString()); // Set a random password
             User savedUser = userRepository.save(newUser);
             return convertToDto(savedUser);
         }
