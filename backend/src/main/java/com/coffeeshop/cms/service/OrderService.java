@@ -59,13 +59,18 @@ public class OrderService {
         return convertToDto(order);
     }
 
+    public List<OrderDto> getOrdersForUser(String googleId) {
+        User user = userRepository.findByGoogleId(googleId).orElseThrow(() -> new RuntimeException("User not found"));
+        return orderRepository.findByUser(user).stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
     @Transactional
     public OrderDto createOrder(OrderRequestDto orderRequestDto) {
         Order order = new Order();
         User user = userRepository.findByGoogleId(orderRequestDto.getCustomer().getId()).orElseThrow(() -> new RuntimeException("User not found"));
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.PENDING); // The frontend sends this, but it should be PENDING on creation.
+        order.setStatus(OrderStatus.pending); // The frontend sends this, but it should be PENDING on creation.
         order.setDeliOption(orderRequestDto.getDeliOption());
         order.setPaymentMethod(orderRequestDto.getPaymentMethod());
 

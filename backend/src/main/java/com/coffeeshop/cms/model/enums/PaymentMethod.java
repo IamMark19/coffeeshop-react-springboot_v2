@@ -1,7 +1,7 @@
 package com.coffeeshop.cms.model.enums;
 
 public enum PaymentMethod {
-    CASH,
-    KBZ_PAY,
-    WAVE_MONEY
+    cash,
+    kbz_pay,
+    wave_money
 }
