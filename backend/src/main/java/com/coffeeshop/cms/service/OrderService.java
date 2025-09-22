@@ -1,6 +1,10 @@
 package com.coffeeshop.cms.service;
 
-import com.coffeeshop.cms.dto.*;
+import com.coffeeshop.cms.dto.CustomerDto;
+import com.coffeeshop.cms.dto.LatLngDto;
+import com.coffeeshop.cms.dto.OrderDto;
+import com.coffeeshop.cms.dto.OrderItemDto;
+import com.coffeeshop.cms.dto.OrderRequestDto;
 import com.coffeeshop.cms.model.Order;
 import com.coffeeshop.cms.model.OrderItem;
 import com.coffeeshop.cms.model.ProductVariant;
@@ -58,10 +62,12 @@ public class OrderService {
     @Transactional
     public OrderDto createOrder(OrderRequestDto orderRequestDto) {
         Order order = new Order();
-        User user = userRepository.findById(orderRequestDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByGoogleId(orderRequestDto.getCustomer().getId()).orElseThrow(() -> new RuntimeException("User not found"));
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
-        order.setStatus(orderRequestDto.getStatus());
+        order.setStatus(OrderStatus.PENDING); // The frontend sends this, but it should be PENDING on creation.
+        order.setDeliOption(orderRequestDto.getDeliOption());
+        order.setPaymentMethod(orderRequestDto.getPaymentMethod());
 
         List<OrderItem> orderItems = orderRequestDto.getItems().stream().map(itemDto -> {
             OrderItem orderItem = new OrderItem();
@@ -73,7 +79,6 @@ public class OrderService {
             }
 
             variant.setStock(variant.getStock() - itemDto.getQuantity());
-            // No need to save variant here, transactional context will handle it.
 
             orderItem.setProductVariant(variant);
             orderItem.setQuantity(itemDto.getQuantity());
@@ -113,7 +118,7 @@ public class OrderService {
 
         if (order.getUser() != null) {
             CustomerDto customerDto = new CustomerDto();
-            customerDto.setId(order.getUser().getId());
+            customerDto.setId(order.getUser().getGoogleId());
             customerDto.setName(order.getUser().getName());
             customerDto.setAddress(order.getUser().getAddress());
             if (order.getUser().getCoordinates() != null) {
@@ -137,9 +142,7 @@ public class OrderService {
 
     private OrderItemDto convertOrderItemToDto(OrderItem orderItem) {
         OrderItemDto orderItemDto = new OrderItemDto();
-        orderItemDto.setId(orderItem.getId());
-        orderItemDto.setProductId(orderItem.getProductVariant().getProduct().getId());
-        orderItemDto.setProductName(orderItem.getProductVariant().getProduct().getName());
+        orderItemDto.setProductVariantId(orderItem.getProductVariant().getId());
         orderItemDto.setQuantity(orderItem.getQuantity());
         orderItemDto.setPrice(orderItem.getPrice());
         orderItemDto.setSize(orderItem.getProductVariant().getSize());

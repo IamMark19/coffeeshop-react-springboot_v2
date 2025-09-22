@@ -14,7 +14,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public OrderDto createOrder(@RequestBody OrderRequestDto orderRequestDto) {
+    public OrderDto createOrder(@RequestBody com.coffeeshop.cms.dto.OrderRequestDto orderRequestDto) {
         return orderService.createOrder(orderRequestDto);
     }
 

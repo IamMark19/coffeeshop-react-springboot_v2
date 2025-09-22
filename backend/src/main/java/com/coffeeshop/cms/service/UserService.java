@@ -17,7 +17,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDto findOrCreateUser(String email, String name) {
+    public UserDto findOrCreateUser(String email, String name, String googleId) {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
             return convertToDto(existingUser.get());
@@ -25,9 +25,8 @@ public class UserService {
             User newUser = new User();
             newUser.setEmail(email);
             newUser.setName(name);
+            newUser.setGoogleId(googleId);
             newUser.setRole(Role.CUSTOMER);
-            // In a real application, we would handle password and other fields more securely.
-            // For now, we'll leave the password null.
             User savedUser = userRepository.save(newUser);
             return convertToDto(savedUser);
         }
@@ -46,7 +45,6 @@ public class UserService {
         userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
-        // We don't want to expose the role or other sensitive info in the DTO
         return userDto;
     }
 }
