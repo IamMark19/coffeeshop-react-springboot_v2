@@ -7,4 +7,5 @@ public class LoginRequestDto {
     private String email;
     private String name;
     private String googleId;
+    private String idToken;
 }
