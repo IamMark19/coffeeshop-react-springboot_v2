@@ -1,21 +1,12 @@
 import { AuthUser } from '@/types';
-import axios from 'axios';
+import api from './api';
 
-const API_URL = '/api/v1/users';
-
-export type TLoginPayload = Omit<AuthUser, 'id' | 'image'> & {
-  googleId: string;
-  idToken: string;   // 👈 add this
-};
-
-export async function loginUser(
-  payload: TLoginPayload
-): Promise<AuthUser | null> {
+export async function getMe(): Promise<AuthUser | null> {
   try {
-    const response = await axios.post(`${API_URL}/login`, payload);
+    const response = await api.get('/users/me');
     return response.data;
   } catch (err) {
-    console.log('Error:: loginUser :', err);
+    console.log('Error:: getMe :', err);
     return null;
   }
 }
