@@ -1,17 +1,11 @@
 import { useState } from 'react';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode';
-import { loginUser } from '@/service/user';
+import { getMe } from '@/service/user';
 import PageLoading from '@/components/shared/PageLoading';
 import Title1 from '@/components/shared/typo/Title1';
 import { useAuth } from '@/hooks/useAuth';
-import { AuthUser } from '@/types';
 
-interface DecodedToken {
-  email: string;
-  name: string;
-  sub: string;
-}
+const tokenKeyName = 'coffee-shop-auth-token';
 
 export default function LoginPage() {
   const { login: loginToApp } = useAuth();
@@ -30,24 +24,23 @@ export default function LoginPage() {
     }
 
     try {
-      const decodedToken: DecodedToken = jwtDecode(idToken);
-      const { email, name, sub: googleId } = decodedToken;
+      // Store the token so that the getMe call can be authenticated
+      localStorage.setItem(tokenKeyName, idToken);
 
-      const backendUser = await loginUser({
-        email,
-        name,
-        googleId,
-        idToken,  // 👈 include this
-      });
+      const backendUser = await getMe();
 
       setLoading(false);
       if (backendUser) {
         loginToApp(backendUser, idToken);
       } else {
+        // Clear the temporary token if login fails
+        localStorage.removeItem(tokenKeyName);
         console.log('Error logging in to backend');
       }
     } catch (error) {
       setLoading(false);
+      // Clear the temporary token on error
+      localStorage.removeItem(tokenKeyName);
       console.error('Error decoding ID token or logging in:', error);
     }
   };
