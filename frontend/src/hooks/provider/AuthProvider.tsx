@@ -42,13 +42,16 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         logout();
       }
 
-      if (key === keyName) {
+      if (key === userKeyName) {
         if (!newValue) {
           logout();
         }
         const objVal = JSON.parse(newValue as string) as AuthUser | null;
         if (objVal?.id) {
-          login(objVal);
+          const newKey = localStorage.getItem(tokenKeyName);
+          if (newKey) {
+            login(objVal, newKey);
+          }
         }
       }
     };

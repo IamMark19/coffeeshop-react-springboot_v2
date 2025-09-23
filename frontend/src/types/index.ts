@@ -15,6 +15,17 @@ export interface AuthUser {
   image?: string;
 }
 
+export type RegisterRequest = {
+  name: string;
+  email: string;
+  password: string
+}
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+}
+
 export interface UserWithAddress extends AuthUser {
   address?: UserAddress;
 }
