@@ -1,4 +1,4 @@
-import { AuthUser } from '@/types';
+import { AuthUser, LoginRequest, RegisterRequest } from '@/types';
 import api from './api';
 
 export async function getMe(): Promise<AuthUser | null> {
@@ -10,3 +10,11 @@ export async function getMe(): Promise<AuthUser | null> {
     return null;
   }
 }
+
+export const register = async (data: RegisterRequest): Promise<AuthUser> => {
+  return api.post('/users/register', data).then((res) => res.data);
+};
+
+export const login = async (data: LoginRequest): Promise<{ token: string }> => {
+  return api.post('/users/login', data).then((res) => res.data);
+};

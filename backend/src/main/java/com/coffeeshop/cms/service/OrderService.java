@@ -15,6 +15,7 @@ import com.coffeeshop.cms.repository.OrderRepository;
 import com.coffeeshop.cms.repository.ProductVariantRepository;
 import com.coffeeshop.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,15 +60,16 @@ public class OrderService {
         return convertToDto(order);
     }
 
-    public List<OrderDto> getOrdersForUser(String googleId) {
-        User user = userRepository.findByGoogleId(googleId).orElseThrow(() -> new RuntimeException("User not found"));
+    public List<OrderDto> getOrdersForUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         return orderRepository.findByUser(user).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @Transactional
-    public OrderDto createOrder(OrderRequestDto orderRequestDto) {
+    public OrderDto createOrder(OrderRequestDto orderRequestDto, UserDetails userDetails) {
         Order order = new Order();
-        User user = userRepository.findByGoogleId(orderRequestDto.getCustomer().getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        String email = userDetails.getUsername();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with email: " + email));
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(OrderStatus.pending); // The frontend sends this, but it should be PENDING on creation.
@@ -123,7 +125,7 @@ public class OrderService {
 
         if (order.getUser() != null) {
             CustomerDto customerDto = new CustomerDto();
-            customerDto.setId(order.getUser().getGoogleId());
+            customerDto.setId(order.getUser().getId().toString());
             customerDto.setName(order.getUser().getName());
             customerDto.setAddress(order.getUser().getAddress());
             if (order.getUser().getCoordinates() != null) {
