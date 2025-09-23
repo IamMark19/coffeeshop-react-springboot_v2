@@ -3,7 +3,10 @@ import axios from 'axios';
 
 const API_URL = '/api/v1/users';
 
-export type TLoginPayload = Omit<AuthUser, 'id' | 'image'> & { googleId: string };
+export type TLoginPayload = Omit<AuthUser, 'id' | 'image'> & {
+  googleId: string;
+  idToken: string;   // 👈 add this
+};
 
 export async function loginUser(
   payload: TLoginPayload
