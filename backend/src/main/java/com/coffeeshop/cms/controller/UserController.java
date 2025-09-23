@@ -1,54 +1,46 @@
 package com.coffeeshop.cms.controller;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.coffeeshop.cms.dto.LoginRequestDto;
+import com.coffeeshop.cms.dto.UserDto;
+import com.coffeeshop.cms.service.UserService;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
-import com.coffeeshop.cms.dto.LoginRequestDto;
-import com.coffeeshop.cms.dto.UserDto;
-import com.coffeeshop.cms.service.UserService;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private GoogleIdTokenVerifier googleIdTokenVerifier;
+
     @PostMapping("/login")
     public UserDto login(@RequestBody LoginRequestDto loginRequestDto) {
-        return userService.findOrCreateUser(loginRequestDto.getEmail(), loginRequestDto.getName(), loginRequestDto.getGoogleId());
-    }
-
-    @GetMapping("/ping-google")
-    public String pingGoogle() {
-        String urlToPing = "https://www.google.com";
-        logger.info("Attempting to ping URL: {}", urlToPing);
         try {
-            URL url = new URL(urlToPing);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(5000); // 5 seconds
-            connection.setReadTimeout(5000);
-
-            int responseCode = connection.getResponseCode();
-            logger.info("Ping successful. Response code: {}", responseCode);
-            return "SUCCESS: Connected to " + urlToPing + " with response code " + responseCode;
-        } catch (IOException e) {
-            logger.error("Ping failed: Could not connect to {}. Error: {}", urlToPing, e.getMessage());
-            e.printStackTrace();
-            return "FAILED: Could not connect to " + urlToPing + ". Check server logs for details. Error: " + e.getMessage();
+            GoogleIdToken idToken = googleIdTokenVerifier.verify(loginRequestDto.getIdToken());
+            if (idToken != null) {
+                GoogleIdToken.Payload payload = idToken.getPayload();
+                String email = payload.getEmail();
+                String name = (String) payload.get("name");
+                String googleId = payload.getSubject();
+                return userService.findOrCreateUser(email, name, googleId);
+            } else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid ID token");
+            }
+        } catch (GeneralSecurityException | IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Token verification failed", e);
         }
     }
 }

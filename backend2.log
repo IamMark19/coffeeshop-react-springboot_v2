@@ -1,0 +1,87 @@
+[INFO] Error stacktraces are turned on.
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ----------------------< com.coffeeshop:brewtopia >----------------------
+[INFO] Building brewtopia 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] >>> spring-boot:3.5.5:run (default-cli) > test-compile @ brewtopia >>>
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ brewtopia ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO]
+[INFO] --- compiler:3.14.0:compile (default-compile) @ brewtopia ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 45 source files with javac [debug parameters release 21] to target/classes
+[WARNING] /app/backend/src/main/java/com/coffeeshop/cms/config/SecurityConfig.java:[31,55] jwt() in org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer has been deprecated and marked for removal
+[INFO] /app/backend/src/main/java/com/coffeeshop/cms/controller/GeoCodingController.java: /app/backend/src/main/java/com/coffeeshop/cms/controller/GeoCodingController.java uses or overrides a deprecated API.
+[INFO] /app/backend/src/main/java/com/coffeeshop/cms/controller/GeoCodingController.java: Recompile with -Xlint:deprecation for details.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ brewtopia ---
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
+[INFO]
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ brewtopia ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 21] to target/test-classes
+[INFO]
+[INFO] <<< spring-boot:3.5.5:run (default-cli) < test-compile @ brewtopia <<<
+[INFO]
+[INFO]
+[INFO] --- spring-boot:3.5.5:run (default-cli) @ brewtopia ---
+[INFO] Attaching agents: []
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.5)
+
+2025-09-23T08:21:12.094Z  INFO 10190 --- [coffee-management-system] [           main] c.c.c.CoffeeManagementSystemApplication  : Starting CoffeeManagementSystemApplication using Java 21.0.8 with PID 10190 (/app/backend/target/classes started by jules in /app/backend)
+2025-09-23T08:21:12.097Z  INFO 10190 --- [coffee-management-system] [           main] c.c.c.CoffeeManagementSystemApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-23T08:21:12.831Z  INFO 10190 --- [coffee-management-system] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-23T08:21:12.910Z  INFO 10190 --- [coffee-management-system] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 69 ms. Found 6 JPA repository interfaces.
+2025-09-23T08:21:13.585Z  INFO 10190 --- [coffee-management-system] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-23T08:21:13.601Z  INFO 10190 --- [coffee-management-system] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-23T08:21:13.602Z  INFO 10190 --- [coffee-management-system] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-09-23T08:21:13.655Z  INFO 10190 --- [coffee-management-system] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-23T08:21:13.657Z  INFO 10190 --- [coffee-management-system] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1512 ms
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+2025-09-23T08:21:13.768Z  INFO 10190 --- [coffee-management-system] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-23T08:21:14.090Z  INFO 10190 --- [coffee-management-system] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-09-23T08:21:14.092Z  INFO 10190 --- [coffee-management-system] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-23T08:21:14.282Z  INFO 10190 --- [coffee-management-system] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-23T08:21:14.344Z  INFO 10190 --- [coffee-management-system] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
+2025-09-23T08:21:14.379Z  INFO 10190 --- [coffee-management-system] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-23T08:21:14.661Z  INFO 10190 --- [coffee-management-system] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-23T08:21:14.708Z  WARN 10190 --- [coffee-management-system] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-23T08:21:14.728Z  INFO 10190 --- [coffee-management-system] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-23T08:21:15.763Z  INFO 10190 --- [coffee-management-system] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-23T08:21:15.903Z  INFO 10190 --- [coffee-management-system] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T08:21:16.546Z  WARN 10190 --- [coffee-management-system] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-23T08:21:16.648Z DEBUG 10190 --- [coffee-management-system] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : 17 mappings in 'requestMappingHandlerMapping'
+2025-09-23T08:21:16.752Z DEBUG 10190 --- [coffee-management-system] [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-09-23T08:21:16.770Z DEBUG 10190 --- [coffee-management-system] [           main] swordEncoderAuthenticationManagerBuilder : No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2025-09-23T08:21:16.935Z DEBUG 10190 --- [coffee-management-system] [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, BearerTokenAuthenticationFilter, AuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-23T08:21:17.004Z DEBUG 10190 --- [coffee-management-system] [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-09-23T08:21:17.055Z DEBUG 10190 --- [coffee-management-system] [           main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-09-23T08:21:17.124Z  INFO 10190 --- [coffee-management-system] [           main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-09-23T08:21:17.212Z  INFO 10190 --- [coffee-management-system] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-23T08:21:17.222Z  INFO 10190 --- [coffee-management-system] [           main] c.c.c.CoffeeManagementSystemApplication  : Started CoffeeManagementSystemApplication in 5.606 seconds (process running for 5.955)
+2025-09-23T08:27:50.098Z  INFO 10190 --- [coffee-management-system] [ionShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-23T08:27:50.111Z  INFO 10190 --- [coffee-management-system] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-23T08:27:50.117Z  INFO 10190 --- [coffee-management-system] [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T08:27:50.120Z  INFO 10190 --- [coffee-management-system] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-23T08:27:50.126Z  INFO 10190 --- [coffee-management-system] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
