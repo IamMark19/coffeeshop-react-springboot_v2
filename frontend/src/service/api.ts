@@ -3,7 +3,7 @@ import axios from 'axios';
 const tokenKeyName = 'coffee-shop-auth-token';
 
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: 'http://localhost:8080/api/v1',
 });
 
 api.interceptors.request.use((config) => {
