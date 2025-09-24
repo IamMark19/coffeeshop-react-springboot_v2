@@ -3,10 +3,13 @@ package com.coffeeshop.cms.config;
 import com.coffeeshop.cms.service.UserDetailsServiceImpl;
 import com.coffeeshop.cms.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +23,8 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
+
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -29,6 +34,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+        if (path.equals("/api/v1/users/login") || path.equals("/api/v1/users/register")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         final String requestTokenHeader = request.getHeader("Authorization");
 
@@ -40,12 +51,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                logger.error("Unable to get JWT Token", e);
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                logger.warn("JWT Token has expired", e);
+            } catch (MalformedJwtException e) {
+                logger.error("Invalid JWT Token", e);
             }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
+        } else if (requestTokenHeader != null) {
+            logger.warn("JWT Token does not begin with Bearer String: {}", requestTokenHeader);
+            SecurityContextHolder.clearContext();
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -63,5 +77,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-
 }
