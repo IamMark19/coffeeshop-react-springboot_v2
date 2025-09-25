@@ -1,4 +1,9 @@
 package com.coffeeshop.cms.service;
+import com.coffeeshop.cms.dto.AuthResponse;
+import com.coffeeshop.cms.dto.UserDto;
+import com.coffeeshop.cms.model.User;
+import com.coffeeshop.cms.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coffeeshop.cms.dto.RegisterRequestDto;
 import com.coffeeshop.cms.dto.UserDto;
@@ -7,6 +12,7 @@ import com.coffeeshop.cms.model.enums.Role;
 import com.coffeeshop.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +24,18 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+
+    public AuthResponse login(UserDto userDto) {
+        User user = userRepository.findByGoogleId(userDto.getGoogleId());
+        if (user == null) {
+            user = new User();
+            user.setGoogleId(userDto.getGoogleId());
+            user.setName(userDto.getName());
+            user.setEmail(userDto.getEmail());
+            user = userRepository.save(user);
+        }
+        return new AuthResponse(user.getId(), user.getName(), user.getEmail());
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,6 +57,7 @@ public class UserService {
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+
     }
 
     public List<UserDto> getAllUsers() {
