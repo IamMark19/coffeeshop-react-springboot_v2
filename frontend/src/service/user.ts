@@ -15,6 +15,13 @@ export const register = async (data: RegisterRequest): Promise<AuthUser> => {
   return api.post('/users/register', data).then((res) => res.data);
 };
 
-export const login = async (data: LoginRequest): Promise<{ token: string }> => {
-  return api.post('/users/login', data).then((res) => res.data);
+export const login = async (data: LoginRequest): Promise<AuthUser> => {
+  const params = new URLSearchParams();
+  params.append('username', data.email);
+  params.append('password', data.password);
+  return api.post('/users/login', params, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  }).then((res) => res.data);
 };
