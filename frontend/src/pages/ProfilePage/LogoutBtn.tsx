@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { googleLogout } from '@react-oauth/google';
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserAddress } from '@/hooks/useUserAddress';
@@ -20,8 +19,6 @@ export default function LogoutBtn() {
   const handleLogoutConfirm = () => {
     // Close Dialog
     setShowLogoutCD(false);
-    // Call Google Logout Fuction
-    googleLogout();
     // Clear LocalStorage Data
     logoutFromApp();
     removeAddress();
