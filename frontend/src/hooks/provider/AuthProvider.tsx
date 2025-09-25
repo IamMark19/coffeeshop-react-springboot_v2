@@ -3,34 +3,33 @@ import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../useLocalStorage';
 import { AuthUser } from '@/types';
 import AuthContext from '../context/AuthContext';
+import axios from 'axios';
 
 const userKeyName = 'coffee-shop-auth-user';
-const tokenKeyName = 'coffee-shop-auth-token';
 
 type AuthProviderProps = {
   children: JSX.Element | JSX.Element[];
 };
 
+axios.defaults.withCredentials = true;
+
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useLocalStorage<AuthUser>(userKeyName, null);
-  const [token, setToken] = useLocalStorage<string>(tokenKeyName, null);
   // Router
   const navigate = useNavigate();
 
   const login = useCallback(
-    async (data: AuthUser, accessToken: string, redirectUrl?: string) => {
+    async (data: AuthUser, redirectUrl?: string) => {
       setUser(data);
-      setToken(accessToken);
       navigate(redirectUrl || '/', { replace: true });
     },
-    [navigate, setUser, setToken]
+    [navigate, setUser]
   );
 
   const logout = useCallback(() => {
     setUser(null);
-    setToken(null);
     navigate('/login', { replace: true });
-  }, [navigate, setUser, setToken]);
+  }, [navigate, setUser]);
 
   // Event Listener for localstorage changes
   useEffect(() => {
@@ -48,10 +47,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         }
         const objVal = JSON.parse(newValue as string) as AuthUser | null;
         if (objVal?.id) {
-          const newKey = localStorage.getItem(tokenKeyName);
-          if (newKey) {
-            login(objVal, newKey);
-          }
+          login(objVal);
         }
       }
     };

@@ -54,6 +54,7 @@ public class UserService {
         userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
+        userDto.setRole(user.getRole().name());
         return userDto;
     }
 }
