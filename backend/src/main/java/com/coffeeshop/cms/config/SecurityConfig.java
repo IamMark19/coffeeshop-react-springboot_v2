@@ -23,6 +23,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/auth/login").permitAll()
+                .requestMatchers("/api/v1/products", "/api/v1/products/**").permitAll()
+                .requestMatchers("/api/v1/orders", "/api/v1/orders/**").permitAll()
+                .requestMatchers("/api/geocoding/**").permitAll()
+                .anyRequest().permitAll()
+            );
+
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
@@ -38,6 +48,7 @@ public class SecurityConfig {
                         .successHandler((req, res, auth) -> res.setStatus(200))
                         .failureHandler((req, res, ex) -> res.setStatus(401))
                 );
+
         return http.build();
     }
 
