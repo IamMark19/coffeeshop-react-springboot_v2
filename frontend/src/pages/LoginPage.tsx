@@ -5,8 +5,6 @@ import PageLoading from '@/components/shared/PageLoading';
 import Title1 from '@/components/shared/typo/Title1';
 import { useAuth } from '@/hooks/useAuth';
 
-const tokenKeyName = 'coffee-shop-auth-token';
-
 export default function LoginPage() {
   const { login: loginToApp } = useAuth();
   const [email, setEmail] = useState('');
@@ -21,8 +19,8 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const { token, user } = await login({ email, password });
-      loginToApp(user, token);
+      const user = await login({ email, password });
+      loginToApp(user);
     } catch (err) {
       setError('Invalid email or password');
       console.error(err);

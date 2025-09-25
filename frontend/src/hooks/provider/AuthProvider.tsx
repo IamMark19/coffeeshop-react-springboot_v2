@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from '../useLocalStorage';
 import { AuthUser } from '@/types';
 import AuthContext from '../context/AuthContext';
 import axios from 'axios';
-
-const userKeyName = 'coffee-shop-auth-user';
+import { getMe, logout as logoutUser } from '@/service/user';
 
 type AuthProviderProps = {
   children: JSX.Element | JSX.Element[];
@@ -14,9 +12,21 @@ type AuthProviderProps = {
 axios.defaults.withCredentials = true;
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useLocalStorage<AuthUser>(userKeyName, null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
   // Router
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await getMe();
+      if (currentUser) {
+        setUser(currentUser);
+      }
+      setLoading(false);
+    };
+    fetchUser();
+  }, []);
 
   const login = useCallback(
     async (data: AuthUser, redirectUrl?: string) => {
@@ -26,46 +36,20 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     [navigate, setUser]
   );
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    await logoutUser();
     setUser(null);
     navigate('/login', { replace: true });
   }, [navigate, setUser]);
 
-  // Event Listener for localstorage changes
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onStorageUpdate = (e: any) => {
-      const { key, newValue } = e;
-
-      if (key === null) {
-        logout();
-      }
-
-      if (key === userKeyName) {
-        if (!newValue) {
-          logout();
-        }
-        const objVal = JSON.parse(newValue as string) as AuthUser | null;
-        if (objVal?.id) {
-          login(objVal);
-        }
-      }
-    };
-
-    window.addEventListener('storage', onStorageUpdate);
-    return () => {
-      window.removeEventListener('storage', onStorageUpdate);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const value = useMemo(
     () => ({
       user,
+      loading,
       login,
       logout,
     }),
-    [login, logout, user]
+    [login, logout, user, loading]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -50,7 +50,12 @@ const AdminRoute = ({
 };
 
 export default function Router() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Routes>
       <Route element={<AppLayout />}>

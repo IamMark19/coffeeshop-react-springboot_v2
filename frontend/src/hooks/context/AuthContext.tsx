@@ -1,9 +1,10 @@
-import { createContext } from 'react';
 import { AuthUser } from '@/types';
+import { createContext } from 'react';
 
-export type AuthContextType = {
+type AuthContextType = {
   user: AuthUser | null;
-  login: (data: AuthUser, redirectUrl: string) => void;
+  loading: boolean;
+  login: (user: AuthUser, redirectUrl?: string) => void;
   logout: () => void;
 };
 
