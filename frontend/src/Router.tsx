@@ -23,8 +23,8 @@ export default function Router() {
         <Route path="/orders" element={<OrderHistoryPage />} />
         <Route path="/orders/:id" element={<OrderDetailPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/#" element={<PrivacyPolicyPage />} />
+        <Route path="/#" element={<TermsAndConditions />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
         {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />

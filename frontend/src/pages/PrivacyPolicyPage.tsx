@@ -65,10 +65,10 @@ export default function PrivacyPolicyPage() {
         If you have any questions or concerns about our Privacy Policy, please
         contact us at{' '}
         <a
-          href="mailto:zawhtetaung21199@gmail.com"
+          href="#"
           className="text-primary underline"
         >
-          zawhtetaung21199@gmail.com
+         
         </a>
         .
       </p>

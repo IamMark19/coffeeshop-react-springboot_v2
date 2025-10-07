@@ -29,7 +29,7 @@ export default function TermsAndConditions() {
       <DocTitle2>4. Privacy Policy</DocTitle2>
       <p>
         Your use of the app is also governed by our{' '}
-        <Link to="/privacy-policy" className="underline">
+        <Link to="/" className="underline">
           Privacy Policy
         </Link>
         . Please review the Privacy Policy to understand how we collect, use,

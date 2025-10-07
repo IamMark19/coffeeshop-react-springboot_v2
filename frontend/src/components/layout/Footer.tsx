@@ -42,12 +42,12 @@ export default function Footer() {
               </h2>
               <ul className="text-gray-500">
                 <li className="mb-4">
-                  <Link to="/privacy-policy" className="hover:underline">
+                  <Link to="#" className="hover:underline">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link to="/terms-and-conditions" className="hover:underline">
+                  <Link to="#" className="hover:underline">
                     Terms &amp; Conditions
                   </Link>
                 </li>
@@ -58,7 +58,7 @@ export default function Footer() {
         <hr className="my-2 border-gray-200" />
         <div className="p-2 mx-auto">
           <p className="text-sm text-gray-500 text-center">
-            {'© 2024 '}
+            {'© 2025 '}
             <Link to="/" className="hover:underline">
               {APP_NAME}
             </Link>
